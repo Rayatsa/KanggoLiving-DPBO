@@ -9,121 +9,66 @@ package kanggoliving_poryek;
  * @author Meliana
  */
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Inspection {
     private int inspectionId;
-    private LocalDateTime inspectionDate;
+    private Date inspectionDate;
     private String result;
-    private String inspectorName;
-    private String notes;
-    private boolean isCompleted;
 
-    public Inspection(int inspectiomID, String inspectionName) {
+    public Inspection(int inspectionId, Date inspectionDate, String result) {
         this.inspectionId = inspectionId;
-        this.inspectorName = inspectorName;
-        this.inspectionDate = LocalDateTime.now();
-        this.isCompleted = false;
-        this.result = "";
-        this.notes = "";
+        this.inspectionDate = inspectionDate;
+        this.result = null;
     }
     
     public boolean performInspection() {
-            System.out.println("Inspection : " + inspectionId);
-            System.out.println("Memulai proses inspeksi ...");
-            
-            this.result = "Kondisi bangunan aman dan tidak ada kerusakan. ";
-            
-            this.isCompleted = true;
-            return true;
+        System.out.println("=== INSPEKSI LAPANGAN ===");
+        System.out.println("Inspeksi ID : " + inspectionId + " dimulai pada: " + inspectionDate);
+        System.out.println("- Memeriksa hasil instalasi dan kesesuaian dengan standar KanggoLiving... ");
+        System.out.println("- Memverifikasi kualitas material yang digunakan...");
+        System.out.println("- Melakukan pengecekan akhir terhadap kondisi ruangan...");
+        System.out.println("Status : Inspeksi selesai dijalankan. ");
+        return true;
     }
     
     public void recordResult(String result) {
-        if (isCompleted) {
-            System.out.println("Jalankan performInspection terlebih dahulu. ");
-            return;   
-        }
         this.result = result;
+        System.out.println("Hasil Inspeksi : " + inspectionId + " berhasil dicatat: " + this.result );
     }
-    
+
     public String getResult() {
-        if (result == null || result.isEmpty()) {
-            return "Belum ada hasil inspeksi yang dicatat.";
+        if (this.result == null || this.result.isEmpty()) {
+            System.out.println("Belum ada hasil inspeksi yang tercatat untuk ID : " + inspectionId);
+            return "Belum ada hasil";
         }
-        return result;
-    }
-    
-    public void addNotes(String notes) {
-        if (!isCompleted) {
-            System.out.println("Jalankan perform inspection terlebih dahulu. ");
-            return;
-        }
-        this.notes = notes;
-        System.out.println("Catatan ditambahkan. ");
-    }
-    
-    public String getFormattedDate() {
-        if (inspectionDate == null) {
-            return "-";
-        }
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
-        return inspectionDate.format(formatter);
-    }
-    
-    public void printSummary() {
-        System.out.println("==========================");
-        System.out.println("RINGKASAN INSPEKSI");
-        System.out.println("==========================");
-        System.out.println("ID Inspeksi     : #" + inspectionId);
-        System.out.println("Inspektor       : " + inspectorName);
-        System.out.println("Tanggal         : "  + getFormattedDate());
-        System.out.println("Status          : " + (isCompleted ? "Selesai" : "Belum dilakukan"));
-        System.out.println("Hasil           : " + getResult());
-        System.out.println("Catatan         : " + (notes.isEmpty() ? "-" : notes));
-        System.out.println("===========================");
-    }
-    
-    public boolean isCompletted() {
-        return isCompleted;
+        return this.result;
     }
 
     public int getInspectionId() {
         return inspectionId;
     }
 
-    public LocalDateTime getInspectionDate() {
+    public void setInspectionId(int inspectionId) {
+        this.inspectionId = inspectionId;
+    }
+
+    public Date getInspectionDate() {
         return inspectionDate;
     }
-
-    public boolean isIsCompleted() {
-        return isCompleted;
+    
+    public void setInspectionDate(Date inspectionDate) {
+        this.inspectionDate = inspectionDate;
     }
 
-    public String getInspectorName() {
-        return inspectorName;
+    public void setResult(String result) {
+        this.result = result;
     }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setInspectorName(String inspectorName) {
-        this.inspectorName = inspectorName;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    @Override
-    public String toString() {
-        return "InspectionID : " + inspectionId + 
-                "Inspector : " + inspectorName +
-                "Completed : " + isCompleted +
-                "Result : " + getResult();
-    }
+    
+    
+    
+    
+    
     
     
     
