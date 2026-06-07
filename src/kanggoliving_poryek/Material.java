@@ -113,9 +113,5 @@ public class Material {
 
     public String getStatus() {
         return status;
-    }
-    
-    
-    
-    
+    }   
 }

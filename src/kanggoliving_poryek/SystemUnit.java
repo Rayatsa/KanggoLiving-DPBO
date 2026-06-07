@@ -96,6 +96,4 @@ public class SystemUnit {
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
-    
-    
 }

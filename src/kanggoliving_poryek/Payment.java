@@ -4,7 +4,8 @@
  */
 package kanggoliving_poryek;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -12,68 +13,45 @@ import java.util.Date;
  */
 public class Payment {
 
-    private int paymentId;
-    private Date paymentDate;
-    private String paymentMethod, status;
+    private String paymentId, paymentMethod, status, paymentDate;
     private double amount;
+    private Invoice targetInvoice;
 
-    public Payment(int paymentId, Date paymentDate, String paymentMethod, String status, double amount) {
+    public Payment(String paymentId, double amount, String paymentMethod, Invoice targetInvoice) {
         this.paymentId = paymentId;
-        this.paymentDate = paymentDate;
-        this.paymentMethod = paymentMethod;
-        this.status = status;
         this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.targetInvoice = targetInvoice;
+        this.status = "Pending";
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        this.paymentDate = now.format(format);
     }
 
     public boolean confirmPayment() {
-        if (this.amount > 0 && this.paymentMethod != null && this.paymentMethod.isEmpty()) {
-            this.status = "Confirmed";
-            System.out.println("Pembayaran dengan ID " + this.paymentId + " berhasil dikonfirmasi.");
-            return true;
-        } else {
-            this.status = "Failed";
-            System.out.println("Konfirmasi pembayaran gagal untuk ID " + this.paymentId);
-            return false;
-        }
+        this.status = "Succes";
+        this.targetInvoice.addPayment(this.amount);
+        return true;
     }
 
-    public int getPaymentId() {
-        return paymentId;
+    public String getPaymentDate() {
+        return this.paymentDate;
     }
 
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
+    public String getPaymentId() {
+        return this.paymentId;
+    }
+    
+    public double getAmount() {
+        return this.amount;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public Invoice getTargetInvoice() {
+        return this.targetInvoice;
     }
 
     public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
+        return this.status;
     }
 }
