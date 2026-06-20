@@ -52,7 +52,7 @@ public class Client extends User {
     }
 
     public Payment makePayment(Invoice invoice, double amount, String paymentMethod) {
-        System.out.println("Klien " + super.getName() + " melakukan pembayaran sebesar Rp" + amount + " untuk Invoice ID: " + invoice.getInvoiceId());
+        System.out.println("Klien " + super.getName() + " melakukan pembayaran sebesar Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", amount) + " untuk Invoice ID: " + invoice.getInvoiceId());
         String paymentId = "PAY-" + System.currentTimeMillis();
         Payment newPayment = new Payment(paymentId, amount, paymentMethod, invoice);
         return newPayment;
@@ -61,8 +61,8 @@ public class Client extends User {
     public void viewInvoice(Invoice invoice) {
         System.out.println("=== DETAIL INVOICE ===");
         System.out.println("ID Invoice     : " + invoice.getInvoiceId());
-        System.out.println("Total Tagihan  : Rp" + invoice.getAmount());
-        System.out.println("Jumlah Dibayar : Rp" + invoice.getAmountPaid());
+        System.out.println("Total Tagihan  : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", invoice.getAmount()));
+        System.out.println("Jumlah Dibayar : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", invoice.getAmountPaid()));
         System.out.println("Status         : " + invoice.getStatus());
     }
 }

@@ -72,8 +72,8 @@ public class Material {
         System.out.println("=== KALKULASI BIAYA MATERIAL ===");
         System.out.println("Material    :" + materialName);
         System.out.println("Jumlah      :" + quantity);
-        System.out.println("Harga Satuan: RP." + unitPrice );
-        System.out.println("Total Biaya : RP." + totalCost);
+        System.out.println("Harga Satuan: Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", unitPrice));
+        System.out.println("Total Biaya : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", totalCost));
         
         return totalCost;
     }

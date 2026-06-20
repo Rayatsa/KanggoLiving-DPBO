@@ -46,8 +46,8 @@ public class Main {
         
         // Validasi budget dari Klien
         double budgetKlien = 30000000.0;
-        System.out.println("Estimasi Budget Desain : Rp" + proyekDesain.getEstimatedBudget());
-        System.out.println("Budget yang dimiliki Klien : Rp" + budgetKlien);
+        System.out.println("Estimasi Budget Desain : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", proyekDesain.getEstimatedBudget()));
+        System.out.println("Budget yang dimiliki Klien : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", budgetKlien));
         proyekDesain.validateBudget(budgetKlien);
         
         // Klien mengajukan revisi kecil

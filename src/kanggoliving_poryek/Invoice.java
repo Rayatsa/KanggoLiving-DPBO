@@ -54,7 +54,7 @@ public class Invoice {
     public void addPayment(double nominalUang) {
         this.amountPaid += nominalUang;
 
-        System.out.println("Dana masuk sebesar Rp" + nominalUang + " ke Faktur " + this.invoiceId);
+        System.out.println("Dana masuk sebesar Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", nominalUang) + " ke Faktur " + this.invoiceId);
 
         if (this.amountPaid >= this.amount) {
             this.status = "Paid";
@@ -62,7 +62,7 @@ public class Invoice {
         } else {
             this.status = "Partial";
             double sisaTagihan = this.amount - this.amountPaid;
-            System.out.println("Status Faktur: PARTIAL. Sisa tagihan: Rp" + sisaTagihan);
+            System.out.println("Status Faktur: PARTIAL. Sisa tagihan: Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", sisaTagihan));
         }
 
     }
