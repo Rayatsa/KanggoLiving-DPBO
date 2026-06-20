@@ -1,4 +1,4 @@
-package kanggoliving_poryek;
+package kanggoliving_poryek.model;
 
 import java.util.Date;
 import kanggoliving_poryek.interfaces.Approvable;
