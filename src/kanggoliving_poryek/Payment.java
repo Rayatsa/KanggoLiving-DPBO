@@ -6,12 +6,13 @@ package kanggoliving_poryek;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import kanggoliving_poryek.interfaces.Payable;
 
 /**
  *
  * @author nadiya
  */
-public class Payment {
+public class Payment implements Payable {
 
     private String paymentId, paymentMethod, status, paymentDate;
     private double amount;

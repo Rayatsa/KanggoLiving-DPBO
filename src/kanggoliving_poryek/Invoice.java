@@ -6,12 +6,13 @@ package kanggoliving_poryek;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import kanggoliving_poryek.interfaces.Payable;
 
 /**
  *
  * @author nadiya
  */
-public class Invoice {
+public class Invoice implements Payable {
 
     private double amount, amountPaid;
     private String invoiceId, status, createDate;

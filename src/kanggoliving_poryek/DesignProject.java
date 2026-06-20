@@ -1,6 +1,9 @@
 package kanggoliving_poryek;
 
-public class DesignProject {
+import kanggoliving_poryek.interfaces.Approvable;
+
+public class DesignProject implements Approvable {
+    private String status = "Pending";
     private int designId;
     private int consultationId;
     private String conceptStyle;
@@ -75,5 +78,17 @@ public class DesignProject {
 
     public void setRevisionCount(int revisionCount) {
         this.revisionCount = revisionCount;
+    }
+
+    @Override
+    public boolean approve() {
+        this.status = "Approved";
+        System.out.println("Design Project ID " + designId + " approved.");
+        return true;
+    }
+
+    @Override
+    public String getStatus() {
+        return this.status;
     }
 }

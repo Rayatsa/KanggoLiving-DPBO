@@ -1,8 +1,9 @@
 package kanggoliving_poryek;
 
 import java.util.Date;
+import kanggoliving_poryek.interfaces.Approvable;
 
-public class Consultation {
+public class Consultation implements Approvable {
     private int consultationId;
     private Date consultationDate;
     private String status;

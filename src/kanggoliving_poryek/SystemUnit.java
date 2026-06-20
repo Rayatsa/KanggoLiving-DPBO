@@ -4,11 +4,13 @@
  */
 package kanggoliving_poryek;
 
+import kanggoliving_poryek.interfaces.Diagnosable;
+
 /**
  *
  * @author Meliana
  */
-public class SystemUnit {
+public class SystemUnit implements Diagnosable {
     private int systemId;
     private String systemName;
     private String condition;
