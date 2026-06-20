@@ -1,57 +1,105 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package kanggoliving_poryek;
 
-/**
- *
- * @author nadiya
- */
+import java.util.Date;
+
 public class Main {
 
     public static void main(String[] args) {
-        Admin adminFinance = new Admin(1, "Meliana", "meli@kanggo.com", "0811", "pass123", "Finance");
+        System.out.println("=================================================");
+        System.out.println("   SIMULASI SISTEM MANAJEMEN KANGGOLIVING        ");
+        System.out.println("=================================================\n");
 
-        // Buat Invoice dengan total tagihan Rp 10.000.000
-        Invoice tagihanProyek = new Invoice("INV-2026", 10000000.0);
-        System.out.println("ID Tagihan    : " + tagihanProyek.getInvoiceId());
-        System.out.println("Total Tagihan : Rp" + tagihanProyek.getAmount());
-        System.out.println("Status Awal   : " + tagihanProyek.getStatus()); // Ekspektasi: Unpaid
+        // 1. Inisiasi Aktor & Objek Utama
+        System.out.println("--- 1. INISIASI AKTOR ---");
+        Client client = new Client(101, "Sidqi Maan", "sidqi@client.com", "sidqi123", "0812345", "Client", "Bandung");
+        Admin adminFinance = new Admin(1, "Meliana", "meli@kanggo.com", "pass123", "08112233", "Finance");
+        Technician technician = new Technician(201, "Instalasi & Listrik", 301, "Raihan Yassar", "raihan@tech.com", "raihan123", "089999", "Technician");
 
-        System.out.println("\n=== 2. SIMULASI PEMBAYARAN DP (PARTIAL) ===");
-        // Kita bypass class Client dan langsung membuat objek Payment (misal klien transfer 4 Juta)
-        Payment transferDP = new Payment("PAY-001", 4000000.0, "Transfer BCA", tagihanProyek);
-        System.out.println("Tiket Pembayaran dibuat otomatis pada: " + transferDP.getPaymentDate());
+        System.out.println("Klien      : " + client.getName() + " (" + client.getAddress() + ")");
+        System.out.println("Admin      : " + adminFinance.getName() + " (Role: " + adminFinance.getRole() + ")");
+        System.out.println("Teknisi    : " + technician.getName() + " (Spesialisasi: " + technician.checkSystem(1) + ")"); // test method checkSystem
+        System.out.println();
 
-        // Admin memverifikasi tiket pembayaran tersebut
-        adminFinance.verifyPayment(transferDP);
+        // 2. Alur Pra-Proyek (Konsultasi & Penjadwalan)
+        System.out.println("--- 2. ALUR PRA-PROYEK (KONSULTASI & JADWAL) ---");
+        // Klien mengajukan keluhan kelayakan ruangan
+        TicketProblem tiketMasalah = client.submitProblem("Instalasi listrik kamar utama sering korsleting dan perlu desain ulang.");
+        
+        // Admin membuatkan jadwal konsultasi
+        Date tanggalKonsultasi = new Date(System.currentTimeMillis() + 86400000); // besok
+        Schedule jadwal = new Schedule(501, tanggalKonsultasi, "10:00 WIB", "Pending");
+        
+        // Klien memilih jadwal tersebut
+        client.choseSchedule(jadwal);
+        
+        // Membuat sesi konsultasi
+        Consultation konsultasi = new Consultation(601, tanggalKonsultasi, "Pending");
+        
+        // Klien menyetujui hasil konsultasi
+        client.approveConsultation(konsultasi);
+        System.out.println();
 
-        // Cek kondisi Invoice setelah DP diverifikasi
-        System.out.println("-> Total Uang Masuk : Rp" + tagihanProyek.getAmountPaid()); // Ekspektasi: 4000000.0
-        System.out.println("-> Status Tagihan   : " + tagihanProyek.getStatus()); // Ekspektasi: Partial
+        // 3. Alur Manajemen Desain & Budgeting
+        System.out.println("--- 3. MANAJEMEN DESAIN & BUDGETING ---");
+        // Desainer membuat proyek desain berdasarkan konsultasi
+        DesignProject proyekDesain = new DesignProject(701, konsultasi.getConsultationId(), "Modern Japandi", 25000000.0);
+        
+        // Validasi budget dari Klien
+        double budgetKlien = 30000000.0;
+        System.out.println("Estimasi Budget Desain : Rp" + proyekDesain.getEstimatedBudget());
+        System.out.println("Budget yang dimiliki Klien : Rp" + budgetKlien);
+        proyekDesain.validateBudget(budgetKlien);
+        
+        // Klien mengajukan revisi kecil
+        proyekDesain.updateDesign("Ubah warna cat dinding dari krem menjadi abu-abu terang.");
+        
+        // Cek kesiapan produksi
+        if (proyekDesain.isReadyForProduction()) {
+            System.out.println("Proyek Desain SIAP untuk diproduksi!");
+        }
+        System.out.println();
 
-        System.out.println("\n=== 3. SIMULASI PEMBAYARAN TIDAK VALID (NEGATIVE TEST) ===");
-        // Skenario: Bukti transfer palsu atau nominal 0
-        Payment transferBodong = new Payment("PAY-002", 0.0, "Transfer Mandiri", tagihanProyek);
+        // 4. Alur Pembayaran DP (Down Payment)
+        System.out.println("--- 4. ALUR PEMBAYARAN TERMIN DP ---");
+        // Admin Finance menerbitkan Invoice DP senilai Rp 10.000.000
+        adminFinance.createInvoice("INV-JAPANDI-01", 10000000.0);
+        Invoice tagihanDP = new Invoice("INV-JAPANDI-01", 10000000.0);
+        
+        // Klien melihat rincian Invoice
+        client.viewInvoice(tagihanDP);
+        
+        // Klien membayar DP sebesar Rp 10.000.000
+        Payment bayarDP = client.makePayment(tagihanDP, 10000000.0, "Transfer BCA");
+        
+        // Admin memverifikasi pembayaran
+        adminFinance.verifyPayment(bayarDP);
+        
+        // Cek status Invoice
+        client.viewInvoice(tagihanDP);
+        System.out.println();
 
-        // Admin memverifikasi
-        adminFinance.verifyPayment(transferBodong);
+        // 5. Alur Operasional, Produksi & Survei Lapangan (Teknisi)
+        System.out.println("--- 5. OPERASIONAL LAPANGAN (TEKNISI) ---");
+        // Teknisi melakukan survey lapangan pada unit sistem
+        SystemUnit unitKamar = new SystemUnit(801, "Instalasi Listrik Kamar Utama", "Perlu Pengecekan", "SN-LSTRK-099");
+        unitKamar.diagnose();
+        
+        // Teknisi melakukan troubleshooting
+        technician.performTroubleShooting(501);
+        
+        // Teknisi memperbarui kondisi unit sistem ke "Baik"
+        unitKamar.updateCondition("Baik");
+        
+        // Inspeksi Akhir (Quality Control)
+        technician.finalInspection(501);
+        
+        // Teknisi membuat Laporan Akhir Proyek
+        Report laporanAkhir = technician.createReport(801);
+        laporanAkhir.printReport();
+        System.out.println();
 
-        // Cek kondisi, pastikan uang tidak bertambah
-        System.out.println("-> Total Uang Masuk : Rp" + tagihanProyek.getAmountPaid()); // Ekspektasi: Tetap 4000000.0
-
-        System.out.println("\n=== 4. SIMULASI PELUNASAN SISA TAGIHAN ===");
-        // Sisa tagihan adalah 6 Juta. Kita buatkan tiket pembayaran kedua.
-        Payment transferLunas = new Payment("PAY-003", 6000000.0, "Transfer BCA", tagihanProyek);
-
-        // Admin memverifikasi transfer kedua
-        adminFinance.verifyPayment(transferLunas);
-
-        // Cek kondisi Invoice setelah pelunasan
-        System.out.println("-> Total Uang Masuk : Rp" + tagihanProyek.getAmountPaid()); // Ekspektasi: 10000000.0
-        System.out.println("-> Status Tagihan   : " + tagihanProyek.getStatus()); // Ekspektasi: Paid
-
-        System.out.println("\n=== PENGUJIAN SELESAI ===");
+        System.out.println("=================================================");
+        System.out.println("      SIMULASI SELESAI DENGAN SUKSES!            ");
+        System.out.println("=================================================");
     }
 }

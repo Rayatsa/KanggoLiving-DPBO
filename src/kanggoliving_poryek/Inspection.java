@@ -63,5 +63,5 @@ public class Inspection {
 
     public void setResult(String result) {
         this.result = result;
-    }   
+    }  
 }

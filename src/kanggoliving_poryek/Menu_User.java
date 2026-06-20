@@ -98,8 +98,6 @@ public class Menu_User extends javax.swing.JFrame {
 
         jPanel16.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel26.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\Payment.png")); // NOI18N
-
         jLabel27.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
         jLabel27.setText("System Unit");
 
@@ -169,8 +167,6 @@ public class Menu_User extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("KanggoLiving Informasi User");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\Home (2).png")); // NOI18N
-
         jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("User Management /  Informasi User");
@@ -184,12 +180,9 @@ public class Menu_User extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,8 +206,6 @@ public class Menu_User extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(174, 183, 132));
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
-
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\User2.png")); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(65, 67, 27));
@@ -259,8 +250,6 @@ public class Menu_User extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(174, 183, 132));
 
-        jLabel8.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\Payment.png")); // NOI18N
-
         jLabel9.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(65, 67, 27));
         jLabel9.setText("Payment");
@@ -288,8 +277,6 @@ public class Menu_User extends javax.swing.JFrame {
         );
 
         jPanel11.setBackground(new java.awt.Color(174, 183, 132));
-
-        jLabel16.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\Technician.png")); // NOI18N
 
         jLabel17.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(65, 67, 27));
@@ -319,8 +306,6 @@ public class Menu_User extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(174, 183, 132));
 
-        jLabel18.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\Schedule.png")); // NOI18N
-
         jLabel19.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(65, 67, 27));
         jLabel19.setText("Schedule");
@@ -348,8 +333,6 @@ public class Menu_User extends javax.swing.JFrame {
         );
 
         jPanel14.setBackground(new java.awt.Color(174, 183, 132));
-
-        jLabel22.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\searcch.png")); // NOI18N
 
         jLabel23.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(65, 67, 27));
@@ -379,8 +362,6 @@ public class Menu_User extends javax.swing.JFrame {
 
         jPanel15.setBackground(new java.awt.Color(174, 183, 132));
 
-        jLabel24.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\systemUnit.png")); // NOI18N
-
         jLabel25.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(65, 67, 27));
         jLabel25.setText("System Unit");
@@ -408,8 +389,6 @@ public class Menu_User extends javax.swing.JFrame {
         );
 
         jPanel17.setBackground(new java.awt.Color(174, 183, 132));
-
-        jLabel28.setIcon(new javax.swing.ImageIcon("C:\\ElemenNetbeans\\material.png")); // NOI18N
 
         jLabel29.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(65, 67, 27));

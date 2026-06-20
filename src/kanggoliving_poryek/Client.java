@@ -40,4 +40,29 @@ public class Client extends User {
 
         return newTicket;
     }
+
+    public boolean choseSchedule(Schedule schedule) {
+        System.out.println("Klien " + super.getName() + " memilih jadwal #" + schedule.getSceduleId());
+        return schedule.setScedule(schedule.getDate(), schedule.getTime());
+    }
+
+    public boolean approveConsultation(Consultation consultation) {
+        System.out.println("Klien " + super.getName() + " menyetujui sesi konsultasi #" + consultation.getConsultationId());
+        return consultation.approve();
+    }
+
+    public Payment makePayment(Invoice invoice, double amount, String paymentMethod) {
+        System.out.println("Klien " + super.getName() + " melakukan pembayaran sebesar Rp" + amount + " untuk Invoice ID: " + invoice.getInvoiceId());
+        String paymentId = "PAY-" + System.currentTimeMillis();
+        Payment newPayment = new Payment(paymentId, amount, paymentMethod, invoice);
+        return newPayment;
+    }
+
+    public void viewInvoice(Invoice invoice) {
+        System.out.println("=== DETAIL INVOICE ===");
+        System.out.println("ID Invoice     : " + invoice.getInvoiceId());
+        System.out.println("Total Tagihan  : Rp" + invoice.getAmount());
+        System.out.println("Jumlah Dibayar : Rp" + invoice.getAmountPaid());
+        System.out.println("Status         : " + invoice.getStatus());
+    }
 }
