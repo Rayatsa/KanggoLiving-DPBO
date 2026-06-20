@@ -1,6 +1,6 @@
-# Entity Relationship Diagram (ERD) - KanggoLiving
+# Entity Relationship Diagram (ERD) & Struktur Arsitektur - KanggoLiving
 
-Dokumen ini berisi pemodelan **Entity Relationship Diagram (ERD)** untuk sistem ERP skala mikro **KanggoLiving** berdasarkan implementasi OOP dan Class Diagram yang telah dianalisis.
+Dokumen ini berisi pemodelan **Entity Relationship Diagram (ERD)** serta dokumentasi **Struktur Arsitektur Package & Interface** untuk sistem ERP skala mikro **KanggoLiving** berdasarkan implementasi OOP dan Class Diagram yang terbaru.
 
 ---
 
@@ -232,3 +232,73 @@ erDiagram
 5. **Penjadwalan Multilateral (1:N)**: Tabel `SCHEDULE` menjembatani koordinasi antara satu `ADMIN`, satu `CLIENT`, dan satu `TECHNICIAN`.
 6. **Pemeriksaan & Laporan (1:1)**: Kegiatan `INSPECTION` akan menghasilkan tepat satu laporan resmi (`REPORT`).
 7. **Invoice & Pembayaran (1:1)**: Satu `INVOICE` dibayar melalui satu transaksi `PAYMENT`.
+
+---
+
+## 4. Struktur Arsitektur & Package
+
+Proyek **KanggoLiving** diorganisasikan ke dalam beberapa package terpisah untuk meningkatkan modularitas, kerapian, dan kemudahan pemeliharaan (*maintainability*):
+
+```
+src/kanggoliving_poryek/
+│
+├── Main.java (Titik masuk utama / Simulasi alur sistem)
+│
+├── users/ (Aktor/Pengguna Sistem)
+│   ├── User.java (Parent class abstract)
+│   ├── Admin.java
+│   ├── Client.java
+│   └── Technician.java
+│
+├── model/ (Objek Bisnis / Data Model)
+│   ├── Consultation.java
+│   ├── DesignProject.java
+│   ├── Inspection.java
+│   ├── Invoice.java
+│   ├── Material.java
+│   ├── Payment.java
+│   ├── Report.java
+│   ├── Schedule.java
+│   ├── SystemUnit.java
+│   └── TicketProblem.java
+│
+└── interfaces/ (Kontrak Abstraksi Metode OOP)
+    ├── Approvable.java
+    ├── Diagnosable.java
+    └── Payable.java
+```
+
+---
+
+## 5. Implementasi Class Interface
+
+Untuk memenuhi prinsip abstraksi dan standarisasi perilaku dalam OOP, diimplementasikan 3 kelas Interface berikut:
+
+### A. Interface `Approvable`
+Digunakan untuk entitas yang memerlukan alur persetujuan (*approval*).
+* **Package**: `kanggoliving_poryek.interfaces`
+* **Metode**:
+  * `boolean approve()`: Menyetujui entitas/dokumen.
+  * `String getStatus()`: Mendapatkan status persetujuan saat ini.
+* **Kelas Penerap (`implements`)**:
+  * `Consultation`: Sesi konsultasi yang disetujui klien.
+  * `DesignProject`: Draf proyek desain yang disetujui klien untuk siap diproduksi.
+
+### B. Interface `Payable`
+Digunakan untuk entitas yang memproses nilai nominal transaksi keuangan.
+* **Package**: `kanggoliving_poryek.interfaces`
+* **Metode**:
+  * `double getAmount()`: Mendapatkan jumlah nominal uang tagihan/pembayaran.
+  * `String getStatus()`: Mendapatkan status pembayaran.
+* **Kelas Penerap (`implements`)**:
+  * `Invoice`: Tagihan proyek.
+  * `Payment`: Transaksi pembayaran masuk.
+
+### C. Interface `Diagnosable`
+Digunakan untuk komponen fisik yang dapat diinspeksi atau didiagnosa kondisinya.
+* **Package**: `kanggoliving_poryek.interfaces`
+* **Metode**:
+  * `String diagnose()`: Mendiagnosa kondisi fisik komponen.
+  * `void updateCondition(String condition)`: Mengubah kondisi kelayakan komponen.
+* **Kelas Penerap (`implements`)**:
+  * `SystemUnit`: Unit sistem di dalam ruangan klien (misal instalasi kelistrikan).
