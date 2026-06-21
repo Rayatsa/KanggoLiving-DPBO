@@ -143,7 +143,8 @@ public class ClientDashboardPanel extends JPanel {
     }
 
     public void refreshUI() {
-        if (parentFrame.getLoggedInUser() == null) return;
+        if (parentFrame.getLoggedInUser() == null)
+            return;
         Client client = (Client) parentFrame.getLoggedInUser();
 
         // 1. Overview Screen
@@ -174,9 +175,10 @@ public class ClientDashboardPanel extends JPanel {
         lblOpenTicketsVal.setText(String.valueOf(openTickets));
 
         // 2. Consultation Screen Table
-        DefaultTableModel modelConsult = new DefaultTableModel(new String[]{"ID Konsultasi", "Tanggal Sesi", "Status"}, 0);
+        DefaultTableModel modelConsult = new DefaultTableModel(
+                new String[] { "ID Konsultasi", "Tanggal Sesi", "Status" }, 0);
         for (Consultation c : parentFrame.getConsultationList()) {
-            modelConsult.addRow(new Object[]{
+            modelConsult.addRow(new Object[] {
                     c.getConsultationId(),
                     c.getConsultationDate().toString(),
                     c.getStatus()
@@ -192,7 +194,7 @@ public class ClientDashboardPanel extends JPanel {
             lblProjBudget.setText(rpFormat.format(dp.getEstimatedBudget()));
             lblProjRevisions.setText(String.valueOf(dp.getRevisionCount()));
             lblProjStatus.setText(dp.getStatus());
-            
+
             btnApproveProject.setEnabled(dp.getStatus().equalsIgnoreCase("Pending"));
             btnRequestRevision.setEnabled(true);
         } else {
@@ -206,9 +208,10 @@ public class ClientDashboardPanel extends JPanel {
         }
 
         // 4. Invoices Screen Table
-        DefaultTableModel modelInvoice = new DefaultTableModel(new String[]{"ID Invoice", "Tagihan Dasar", "Pajak (PPN 12%)", "Total Tagihan", "Telah Dibayar", "Status"}, 0);
+        DefaultTableModel modelInvoice = new DefaultTableModel(new String[] { "ID Invoice", "Tagihan Dasar",
+                "Pajak (PPN 12%)", "Total Tagihan", "Telah Dibayar", "Status" }, 0);
         for (Invoice inv : parentFrame.getInvoiceList()) {
-            modelInvoice.addRow(new Object[]{
+            modelInvoice.addRow(new Object[] {
                     inv.getInvoiceId(),
                     rpFormat.format(inv.getAmount()),
                     rpFormat.format(inv.getAmount() * 0.12),
@@ -220,9 +223,10 @@ public class ClientDashboardPanel extends JPanel {
         tblInvoices.setModel(modelInvoice);
 
         // 5. Tickets Screen Table
-        DefaultTableModel modelTicket = new DefaultTableModel(new String[]{"ID Tiket", "Deskripsi Masalah", "Status Masalah", "Tanggal Dibuat"}, 0);
+        DefaultTableModel modelTicket = new DefaultTableModel(
+                new String[] { "ID Tiket", "Deskripsi Masalah", "Status Masalah", "Tanggal Dibuat" }, 0);
         for (TicketProblem t : parentFrame.getTicketList()) {
-            modelTicket.addRow(new Object[]{
+            modelTicket.addRow(new Object[] {
                     t.getTicketId() != null ? t.getTicketId() : "Draft/Processing",
                     t.getProblemDescription(),
                     t.getStatus(),
@@ -235,7 +239,7 @@ public class ClientDashboardPanel extends JPanel {
         StringBuilder sb = new StringBuilder();
         for (String[] msg : parentFrame.getDiscussionMessages()) {
             sb.append("[").append(msg[3]).append("] ").append(msg[0]).append(" (").append(msg[1]).append("):\n")
-              .append(msg[2]).append("\n\n");
+                    .append(msg[2]).append("\n\n");
         }
         taChat.setText(sb.toString());
     }
@@ -332,7 +336,8 @@ public class ClientDashboardPanel extends JPanel {
         gbcF.gridy = 0;
         cardFeedback.add(lblFeedbackTitle, gbcF);
 
-        JLabel lblFeedbackSub = new JLabel("Jika proyek Anda selesai, berikan feedback dan ulasan mengenai kinerja kami.");
+        JLabel lblFeedbackSub = new JLabel(
+                "Jika proyek Anda selesai, berikan feedback dan ulasan mengenai kinerja kami.");
         lblFeedbackSub.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         lblFeedbackSub.setForeground(ThemeColor.TEXT_MUTED);
         gbcF.gridy = 1;
@@ -342,12 +347,12 @@ public class ClientDashboardPanel extends JPanel {
         JPanel ratingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         ratingPanel.setOpaque(false);
         ratingPanel.add(new JLabel("Rating Kepuasan: "));
-        JComboBox<String> cbRating = new JComboBox<>(new String[]{
-            "\u2605\u2605\u2605\u2605\u2605 (Sangat Puas)",
-            "\u2605\u2605\u2605\u2605\u2606 (Puas)",
-            "\u2605\u2605\u2605\u2606\u2606 (Cukup)",
-            "\u2605\u2605\u2606\u2606\u2606 (Kurang)",
-            "\u2605\u2606\u2606\u2606\u2606 (Kecewa)"
+        JComboBox<String> cbRating = new JComboBox<>(new String[] {
+                "5 (Sangat Puas)",
+                "4 (Puas)",
+                "3 (Cukup)",
+                "2 (Kurang)",
+                "1 (Kecewa)"
         });
         cbRating.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         ratingPanel.add(cbRating);
@@ -383,13 +388,14 @@ public class ClientDashboardPanel extends JPanel {
                 String rate = (String) cbRating.getSelectedItem();
                 // Add to discussion simulation
                 String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                parentFrame.getDiscussionMessages().add(new String[]{
+                parentFrame.getDiscussionMessages().add(new String[] {
                         parentFrame.getLoggedInUser().getName(),
                         "Client (Feedback)",
                         "Memberikan Rating: " + rate + "\nUlasan: " + review,
                         dateStr
                 });
-                JOptionPane.showMessageDialog(ClientDashboardPanel.this, "Terima kasih atas feedback Anda! Ulasan Anda telah diterbitkan ke tim.");
+                JOptionPane.showMessageDialog(ClientDashboardPanel.this,
+                        "Terima kasih atas feedback Anda! Ulasan Anda telah diterbitkan ke tim.");
                 taFeedback.setText("");
                 cbRating.setSelectedIndex(0);
                 refreshUI();
@@ -443,7 +449,8 @@ public class ClientDashboardPanel extends JPanel {
         JPanel prefStylePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         prefStylePanel.setOpaque(false);
         prefStylePanel.add(new JLabel("Gaya Ruangan: "));
-        JComboBox<String> cbPrefStyle = new JComboBox<>(new String[]{"Modern Japandi", "Minimalist Modern", "Industrial Chic", "Scandinavian Comfort", "Classic Elegant"});
+        JComboBox<String> cbPrefStyle = new JComboBox<>(new String[] { "Modern Japandi", "Minimalist Modern",
+                "Industrial Chic", "Scandinavian Comfort", "Classic Elegant" });
         cbPrefStyle.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         prefStylePanel.add(cbPrefStyle);
         gbcForm.gridy = 1;
@@ -453,7 +460,8 @@ public class ClientDashboardPanel extends JPanel {
         JPanel timePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         timePanel.setOpaque(false);
         timePanel.add(new JLabel("Pilih Jam Konsultasi: "));
-        JComboBox<String> cbPrefTime = new JComboBox<>(new String[]{"09:00 WIB", "11:00 WIB", "13:30 WIB", "15:30 WIB"});
+        JComboBox<String> cbPrefTime = new JComboBox<>(
+                new String[] { "09:00 WIB", "11:00 WIB", "13:30 WIB", "15:30 WIB" });
         cbPrefTime.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         timePanel.add(cbPrefTime);
         gbcForm.gridy = 2;
@@ -472,25 +480,27 @@ public class ClientDashboardPanel extends JPanel {
                 String timeVal = (String) cbPrefTime.getSelectedItem();
                 int nextSchedId = 500 + parentFrame.getScheduleList().size() + 1;
                 int nextConsultId = 600 + parentFrame.getConsultationList().size() + 1;
-                
+
                 // Add schedule & consultation
-                Schedule newSched = new Schedule(nextSchedId, new Date(System.currentTimeMillis() + 86400000), timeVal, "Scheduled");
+                Schedule newSched = new Schedule(nextSchedId, new Date(System.currentTimeMillis() + 86400000), timeVal,
+                        "Scheduled");
                 parentFrame.getScheduleList().add(newSched);
-                
+
                 Consultation newConsult = new Consultation(nextConsultId, newSched.getDate(), "Pending");
                 parentFrame.getConsultationList().add(newConsult);
 
                 // Add message to chat discussion
                 String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                parentFrame.getDiscussionMessages().add(new String[]{
+                parentFrame.getDiscussionMessages().add(new String[] {
                         parentFrame.getLoggedInUser().getName(),
                         "Client",
-                        "Telah booking konsultasi #" + nextConsultId + " dengan preferensi gaya: " + style + " pada " + timeVal + ". Mohon konfirmasi jadwal oleh Interior Design.",
+                        "Telah booking konsultasi #" + nextConsultId + " dengan preferensi gaya: " + style + " pada "
+                                + timeVal + ". Mohon konfirmasi jadwal oleh Interior Design.",
                         dateStr
                 });
 
-                JOptionPane.showMessageDialog(ClientDashboardPanel.this, 
-                        "Sukses booking konsultasi!\nID Konsultasi: " + nextConsultId + "\nGaya Preferensi: " + style, 
+                JOptionPane.showMessageDialog(ClientDashboardPanel.this,
+                        "Sukses booking konsultasi!\nID Konsultasi: " + nextConsultId + "\nGaya Preferensi: " + style,
                         "Sukses", JOptionPane.INFORMATION_MESSAGE);
                 refreshUI();
             }
@@ -596,20 +606,23 @@ public class ClientDashboardPanel extends JPanel {
         btnApproveProject.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (parentFrame.getDesignProjectList().isEmpty()) return;
-                DesignProject dp = parentFrame.getDesignProjectList().get(parentFrame.getDesignProjectList().size() - 1);
+                if (parentFrame.getDesignProjectList().isEmpty())
+                    return;
+                DesignProject dp = parentFrame.getDesignProjectList()
+                        .get(parentFrame.getDesignProjectList().size() - 1);
                 dp.approve();
-                
+
                 // Add discussion log
                 String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                parentFrame.getDiscussionMessages().add(new String[]{
+                parentFrame.getDiscussionMessages().add(new String[] {
                         parentFrame.getLoggedInUser().getName(),
                         "Client",
                         "Telah MENYETUJUI desain proyek #" + dp.getDesignId() + " (" + dp.getConceptStyle() + ")",
                         dateStr
                 });
 
-                JOptionPane.showMessageDialog(ClientDashboardPanel.this, "Desain proyek berhasil disetujui! Status berubah menjadi Approved.");
+                JOptionPane.showMessageDialog(ClientDashboardPanel.this,
+                        "Desain proyek berhasil disetujui! Status berubah menjadi Approved.");
                 refreshUI();
             }
         });
@@ -617,18 +630,20 @@ public class ClientDashboardPanel extends JPanel {
         btnRequestRevision.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (parentFrame.getDesignProjectList().isEmpty()) return;
-                DesignProject dp = parentFrame.getDesignProjectList().get(parentFrame.getDesignProjectList().size() - 1);
+                if (parentFrame.getDesignProjectList().isEmpty())
+                    return;
+                DesignProject dp = parentFrame.getDesignProjectList()
+                        .get(parentFrame.getDesignProjectList().size() - 1);
 
-                String revisionNote = JOptionPane.showInputDialog(ClientDashboardPanel.this, 
-                        "Masukkan instruksi/catatan revisi desain:", 
+                String revisionNote = JOptionPane.showInputDialog(ClientDashboardPanel.this,
+                        "Masukkan instruksi/catatan revisi desain:",
                         "Form Revisi Desain", JOptionPane.QUESTION_MESSAGE);
                 if (revisionNote != null && !revisionNote.trim().isEmpty()) {
                     dp.updateDesign(revisionNote);
-                    
+
                     // Log
                     String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                    parentFrame.getDiscussionMessages().add(new String[]{
+                    parentFrame.getDiscussionMessages().add(new String[] {
                             parentFrame.getLoggedInUser().getName(),
                             "Client",
                             "Mengajukan Revisi #" + dp.getRevisionCount() + " dengan catatan: " + revisionNote,
@@ -672,12 +687,12 @@ public class ClientDashboardPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = tblInvoices.getSelectedRow();
                 if (selectedRow == -1) {
-                    JOptionPane.showMessageDialog(ClientDashboardPanel.this, 
-                            "Pilih salah satu baris tagihan pada tabel untuk dibayar.", 
+                    JOptionPane.showMessageDialog(ClientDashboardPanel.this,
+                            "Pilih salah satu baris tagihan pada tabel untuk dibayar.",
                             "Peringatan", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                
+
                 String invoiceId = (String) tblInvoices.getValueAt(selectedRow, 0);
                 Invoice targetInv = null;
                 for (Invoice inv : parentFrame.getInvoiceList()) {
@@ -687,22 +702,24 @@ public class ClientDashboardPanel extends JPanel {
                     }
                 }
 
-                if (targetInv == null) return;
+                if (targetInv == null)
+                    return;
                 if (targetInv.getStatus().equalsIgnoreCase("Paid")) {
                     JOptionPane.showMessageDialog(ClientDashboardPanel.this, "Faktur ini sudah Lunas.");
                     return;
                 }
 
                 // Payment popup dialog
-                String[] methods = {"Transfer Bank BCA", "Transfer Bank Mandiri", "Kartu Kredit", "E-Wallet (OVO/GoPay)"};
+                String[] methods = { "Transfer Bank BCA", "Transfer Bank Mandiri", "Kartu Kredit",
+                        "E-Wallet (OVO/GoPay)" };
                 String method = (String) JOptionPane.showInputDialog(ClientDashboardPanel.this,
                         "Pilih Metode Pembayaran:", "Pembayaran",
                         JOptionPane.QUESTION_MESSAGE, null, methods, methods[0]);
 
                 if (method != null) {
                     double outstandingAmount = targetInv.calculateTotal() - targetInv.getAmountPaid();
-                    String amtStr = JOptionPane.showInputDialog(ClientDashboardPanel.this, 
-                            "Masukkan nominal pembayaran (Sisa tagihan: " + rpFormat.format(outstandingAmount) + "):", 
+                    String amtStr = JOptionPane.showInputDialog(ClientDashboardPanel.this,
+                            "Masukkan nominal pembayaran (Sisa tagihan: " + rpFormat.format(outstandingAmount) + "):",
                             outstandingAmount);
                     if (amtStr != null) {
                         try {
@@ -711,24 +728,27 @@ public class ClientDashboardPanel extends JPanel {
                                 JOptionPane.showMessageDialog(ClientDashboardPanel.this, "Nominal tidak valid.");
                                 return;
                             }
-                            
+
                             Client client = (Client) parentFrame.getLoggedInUser();
                             Payment payment = client.makePayment(targetInv, amountToPay, method);
-                            
+
                             // Add payment to simulator list
                             parentFrame.getPaymentList().add(payment);
 
                             // Add chat status
                             String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                            parentFrame.getDiscussionMessages().add(new String[]{
+                            parentFrame.getDiscussionMessages().add(new String[] {
                                     client.getName(),
                                     "Client (Billing)",
-                                    "Telah mengirim Pembayaran (" + payment.getPaymentId() + ") sebesar " + rpFormat.format(amountToPay) + " via " + method + ". Menunggu verifikasi Finance.",
+                                    "Telah mengirim Pembayaran (" + payment.getPaymentId() + ") sebesar "
+                                            + rpFormat.format(amountToPay) + " via " + method
+                                            + ". Menunggu verifikasi Finance.",
                                     dateStr
                             });
 
-                            JOptionPane.showMessageDialog(ClientDashboardPanel.this, 
-                                    "Pembayaran dikirim!\nID Pembayaran: " + payment.getPaymentId() + "\nStatus: Menunggu Verifikasi", 
+                            JOptionPane.showMessageDialog(ClientDashboardPanel.this,
+                                    "Pembayaran dikirim!\nID Pembayaran: " + payment.getPaymentId()
+                                            + "\nStatus: Menunggu Verifikasi",
                                     "Pembayaran Berhasil", JOptionPane.INFORMATION_MESSAGE);
                             refreshUI();
                         } catch (NumberFormatException ex) {
@@ -766,28 +786,29 @@ public class ClientDashboardPanel extends JPanel {
         btnCreateTicket.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String complaint = JOptionPane.showInputDialog(ClientDashboardPanel.this, 
-                        "Jelaskan detail masalah/keluhan ruangan Anda secara lengkap:", 
+                String complaint = JOptionPane.showInputDialog(ClientDashboardPanel.this,
+                        "Jelaskan detail masalah/keluhan ruangan Anda secara lengkap:",
                         "Ajukan Keluhan Baru", JOptionPane.QUESTION_MESSAGE);
                 if (complaint != null && !complaint.trim().isEmpty()) {
                     Client client = (Client) parentFrame.getLoggedInUser();
                     TicketProblem newTicket = client.submitProblem(complaint);
                     newTicket.createTicket();
-                    
+
                     // Add to system state
                     parentFrame.getTicketList().add(newTicket);
-                    
+
                     // Log to chat
                     String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                    parentFrame.getDiscussionMessages().add(new String[]{
+                    parentFrame.getDiscussionMessages().add(new String[] {
                             client.getName(),
                             "Client",
-                            "Telah mengajukan tiket keluhan baru (" + newTicket.getTicketId() + "): \"" + complaint + "\"",
+                            "Telah mengajukan tiket keluhan baru (" + newTicket.getTicketId() + "): \"" + complaint
+                                    + "\"",
                             dateStr
                     });
 
-                    JOptionPane.showMessageDialog(ClientDashboardPanel.this, 
-                            "Tiket berhasil dibuat!\nID Tiket: " + newTicket.getTicketId(), 
+                    JOptionPane.showMessageDialog(ClientDashboardPanel.this,
+                            "Tiket berhasil dibuat!\nID Tiket: " + newTicket.getTicketId(),
                             "Sukses", JOptionPane.INFORMATION_MESSAGE);
                     refreshUI();
                 }
@@ -826,8 +847,7 @@ public class ClientDashboardPanel extends JPanel {
         txtChatMsg.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         txtChatMsg.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ThemeColor.DIVIDER, 1),
-                BorderFactory.createEmptyBorder(6, 8, 6, 8)
-        ));
+                BorderFactory.createEmptyBorder(6, 8, 6, 8)));
         inputPanel.add(txtChatMsg, BorderLayout.CENTER);
 
         RoundedButton btnSend = new RoundedButton("KIRIM");
@@ -840,13 +860,14 @@ public class ClientDashboardPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String msg = txtChatMsg.getText().trim();
-                if (msg.isEmpty()) return;
+                if (msg.isEmpty())
+                    return;
 
                 String senderName = parentFrame.getLoggedInUser().getName();
                 String senderRole = "Client";
                 String timestamp = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
 
-                parentFrame.getDiscussionMessages().add(new String[]{senderName, senderRole, msg, timestamp});
+                parentFrame.getDiscussionMessages().add(new String[] { senderName, senderRole, msg, timestamp });
                 txtChatMsg.setText("");
                 refreshUI();
             }
