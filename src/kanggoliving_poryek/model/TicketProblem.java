@@ -46,4 +46,16 @@ public class TicketProblem {
     public void updateStatus(String newStatus) {
         this.status = newStatus;
     }
+
+    public String getTicketId() {
+        return this.ticketId;
+    }
+
+    public String getProblemDescription() {
+        return this.problemDescription;
+    }
+
+    public String getCreateDate() {
+        return this.createDate;
+    }
 }

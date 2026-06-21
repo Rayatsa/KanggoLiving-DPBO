@@ -55,4 +55,8 @@ public class Payment implements Payable {
     public String getStatus() {
         return this.status;
     }
+
+    public String getPaymentMethod() {
+        return this.paymentMethod;
+    }
 }

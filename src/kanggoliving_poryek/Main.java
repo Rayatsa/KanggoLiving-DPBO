@@ -1,12 +1,22 @@
 package kanggoliving_poryek;
 
 import java.util.Date;
+import javax.swing.SwingUtilities;
 import kanggoliving_poryek.users.*;
 import kanggoliving_poryek.model.*;
 
 public class Main {
 
     public static void main(String[] args) {
+        // Run GUI by default
+        if (args.length == 0 || !args[0].equalsIgnoreCase("--console")) {
+            System.out.println("Memulai Antarmuka Grafis (GUI) KanggoLiving...");
+            SwingUtilities.invokeLater(() -> {
+                new kanggoliving_poryek.GUI.MainFrame().setVisible(true);
+            });
+            return;
+        }
+
         System.out.println("=================================================");
         System.out.println("   SIMULASI SISTEM MANAJEMEN KANGGOLIVING        ");
         System.out.println("=================================================\n");

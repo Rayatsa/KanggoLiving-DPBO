@@ -55,4 +55,8 @@ public class Technician extends User{
         
         return new Report(inspectionId, "Laporan hasil inspeksi " + inspectionId, new java.util.Date());    
     }
+
+    public String getSpecialization() {
+        return this.specialization;
+    }
 }
