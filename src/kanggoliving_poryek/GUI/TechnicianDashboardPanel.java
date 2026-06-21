@@ -80,8 +80,8 @@ public class TechnicianDashboardPanel extends JPanel {
 
         btnMenuOverview = new SidebarButton("Overview Task");
         btnMenuAction = new SidebarButton("Tugas Spesialisasi");
-        btnMenuMaterials = new SidebarButton("FR 11 & 12: Material Stock");
-        btnMenuDiscussion = new SidebarButton("FR 14: Ruang Diskusi");
+        btnMenuMaterials = new SidebarButton("Material Stock");
+        btnMenuDiscussion = new SidebarButton("Ruang Diskusi");
 
         sidebar.add(btnMenuOverview);
         sidebar.add(btnMenuAction);
@@ -281,7 +281,7 @@ public class TechnicianDashboardPanel extends JPanel {
         
         JPanel consultHeader = new JPanel(new BorderLayout());
         consultHeader.setOpaque(false);
-        JLabel lblConsult = new JLabel("FR 1 & 2: Konfirmasi Sesi Konsultasi Klien");
+        JLabel lblConsult = new JLabel("Konfirmasi Sesi Konsultasi Klien");
         lblConsult.setFont(new Font("Segoe UI", Font.BOLD, 13));
         lblConsult.setForeground(ThemeColor.TEXT_DARK);
         consultHeader.add(lblConsult, BorderLayout.WEST);
@@ -305,7 +305,7 @@ public class TechnicianDashboardPanel extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.gridx = 0;
 
-        JLabel lblDesignTitle = new JLabel("FR 3 & 13: Buat & Unggah Draf Desain Ruangan Awal");
+        JLabel lblDesignTitle = new JLabel("Buat & Unggah Draf Desain Ruangan Awal");
         lblDesignTitle.setFont(new Font("Segoe UI", Font.BOLD, 13));
         lblDesignTitle.setForeground(ThemeColor.ACCENT_GREEN);
         gbc.gridy = 0;
@@ -409,7 +409,7 @@ public class TechnicianDashboardPanel extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
 
-        JLabel lblTitle = new JLabel("FR 6: Unggah Pengukuran Dimensi Ruangan Lapangan");
+        JLabel lblTitle = new JLabel("Unggah Pengukuran Dimensi Ruangan Lapangan");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
         lblTitle.setForeground(ThemeColor.ACCENT_GREEN);
         gbc.gridy = 0;
@@ -501,7 +501,7 @@ public class TechnicianDashboardPanel extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.gridx = 0;
 
-        JLabel lblTitle = new JLabel("FR 7: Update Proses Produksi Item Kustom");
+        JLabel lblTitle = new JLabel("Update Proses Produksi Item Kustom");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 13));
         lblTitle.setForeground(ThemeColor.ACCENT_GREEN);
         gbc.gridy = 0;
@@ -538,7 +538,7 @@ public class TechnicianDashboardPanel extends JPanel {
 
         JPanel matHeader = new JPanel(new BorderLayout());
         matHeader.setOpaque(false);
-        JLabel lblMatTitle = new JLabel("FR 11 & 12: Ketersediaan & Pengadaan Material Gudang");
+        JLabel lblMatTitle = new JLabel("Ketersediaan & Pengadaan Material Gudang");
         lblMatTitle.setFont(new Font("Segoe UI", Font.BOLD, 13));
         lblMatTitle.setForeground(ThemeColor.TEXT_DARK);
         matHeader.add(lblMatTitle, BorderLayout.WEST);
@@ -627,7 +627,7 @@ public class TechnicianDashboardPanel extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
 
-        JLabel lblTitle = new JLabel("FR 8: Uji Kelayakan Quality Control (QC)");
+        JLabel lblTitle = new JLabel("Uji Kelayakan Quality Control (QC)");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
         lblTitle.setForeground(ThemeColor.ACCENT_GREEN);
         gbc.gridy = 0;
@@ -750,7 +750,7 @@ public class TechnicianDashboardPanel extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
 
-        JLabel lblTitle = new JLabel("FR 9: Checklist Instalasi Rakitan Lapangan");
+        JLabel lblTitle = new JLabel("Checklist Instalasi Rakitan Lapangan");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
         lblTitle.setForeground(ThemeColor.ACCENT_GREEN);
         gbc.gridy = 0;
@@ -820,7 +820,7 @@ public class TechnicianDashboardPanel extends JPanel {
         panel.setBackground(ThemeColor.PASTEL_BROWN_BG);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel lblTitle = new JLabel("FR 14: Ruang Diskusi Proyek Bersama");
+        JLabel lblTitle = new JLabel("Ruang Diskusi Proyek Bersama");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(ThemeColor.TEXT_DARK);
         lblTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));

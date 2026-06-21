@@ -125,6 +125,7 @@ public class CustomComponents {
 
     public static class SidebarButton extends JButton {
         private boolean active = false;
+        private boolean hovered = false;
 
         public SidebarButton(String text) {
             super(text);
@@ -141,17 +142,14 @@ public class CustomComponents {
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    if (!active) {
-                        setBackground(new Color(255, 255, 255, 25));
-                        setOpaque(true);
-                    }
+                    hovered = true;
+                    repaint();
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    if (!active) {
-                        setOpaque(false);
-                    }
+                    hovered = false;
+                    repaint();
                 }
             });
         }
@@ -159,14 +157,26 @@ public class CustomComponents {
         public void setActive(boolean active) {
             this.active = active;
             if (active) {
-                setBackground(ThemeColor.ACCENT_GREEN);
                 setFont(new Font("Segoe UI", Font.BOLD, 14));
-                setOpaque(true);
             } else {
                 setFont(new Font("Segoe UI", Font.PLAIN, 14));
-                setOpaque(false);
             }
             repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            if (active) {
+                g2.setColor(ThemeColor.ACCENT_GREEN);
+                g2.fillRect(0, 0, getWidth(), getHeight());
+            } else if (hovered) {
+                g2.setColor(new Color(255, 255, 255, 25));
+                g2.fillRect(0, 0, getWidth(), getHeight());
+            }
+            g2.dispose();
+            super.paintComponent(g);
         }
     }
 

@@ -326,7 +326,7 @@ public class ClientDashboardPanel extends JPanel {
         gbcF.gridx = 0;
         gbcF.insets = new Insets(5, 5, 5, 5);
 
-        JLabel lblFeedbackTitle = new JLabel("FR 17: Feedback Layanan & Kepuasan Proyek");
+        JLabel lblFeedbackTitle = new JLabel("Feedback Layanan & Kepuasan Proyek");
         lblFeedbackTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblFeedbackTitle.setForeground(ThemeColor.ACCENT_GREEN);
         gbcF.gridy = 0;
@@ -342,7 +342,13 @@ public class ClientDashboardPanel extends JPanel {
         JPanel ratingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         ratingPanel.setOpaque(false);
         ratingPanel.add(new JLabel("Rating Kepuasan: "));
-        JComboBox<String> cbRating = new JComboBox<>(new String[]{"★★★★★ (Sangat Puas)", "★★★★☆ (Puas)", "★★★☆☆ (Cukup)", "★★☆☆☆ (Kurang)", "★☆☆☆☆ (Kecewa)"});
+        JComboBox<String> cbRating = new JComboBox<>(new String[]{
+            "\u2605\u2605\u2605\u2605\u2605 (Sangat Puas)",
+            "\u2605\u2605\u2605\u2605\u2606 (Puas)",
+            "\u2605\u2605\u2605\u2606\u2606 (Cukup)",
+            "\u2605\u2605\u2606\u2606\u2606 (Kurang)",
+            "\u2605\u2606\u2606\u2606\u2606 (Kecewa)"
+        });
         cbRating.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         ratingPanel.add(cbRating);
         gbcF.gridy = 2;
@@ -403,7 +409,7 @@ public class ClientDashboardPanel extends JPanel {
         panel.setBackground(ThemeColor.PASTEL_BROWN_BG);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel lblTitle = new JLabel("FR 1: Pendaftaran Preferensi & Jadwal Konsultasi");
+        JLabel lblTitle = new JLabel("Pendaftaran Preferensi & Jadwal Konsultasi");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(ThemeColor.TEXT_DARK);
         panel.add(lblTitle, BorderLayout.NORTH);
@@ -519,7 +525,7 @@ public class ClientDashboardPanel extends JPanel {
         panel.setBackground(ThemeColor.PASTEL_BROWN_BG);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel lblTitle = new JLabel("FR 4 & 13: Detail Proyek Desain & Persetujuan");
+        JLabel lblTitle = new JLabel("Detail Proyek Desain & Persetujuan");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(ThemeColor.TEXT_DARK);
         panel.add(lblTitle, BorderLayout.NORTH);
@@ -616,7 +622,7 @@ public class ClientDashboardPanel extends JPanel {
 
                 String revisionNote = JOptionPane.showInputDialog(ClientDashboardPanel.this, 
                         "Masukkan instruksi/catatan revisi desain:", 
-                        "Form Revisi Desain (FR 13)", JOptionPane.QUESTION_MESSAGE);
+                        "Form Revisi Desain", JOptionPane.QUESTION_MESSAGE);
                 if (revisionNote != null && !revisionNote.trim().isEmpty()) {
                     dp.updateDesign(revisionNote);
                     
@@ -647,7 +653,7 @@ public class ClientDashboardPanel extends JPanel {
         // Top bar
         JPanel top = new JPanel(new BorderLayout());
         top.setOpaque(false);
-        JLabel lblTitle = new JLabel("FR 5 & 10: Rincian Billing & Pembayaran");
+        JLabel lblTitle = new JLabel("Rincian Billing & Pembayaran");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(ThemeColor.TEXT_DARK);
         top.add(lblTitle, BorderLayout.WEST);
@@ -796,7 +802,7 @@ public class ClientDashboardPanel extends JPanel {
         panel.setBackground(ThemeColor.PASTEL_BROWN_BG);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel lblTitle = new JLabel("FR 14: Ruang Diskusi & Kolaborasi Proyek");
+        JLabel lblTitle = new JLabel("Ruang Diskusi & Kolaborasi Proyek");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(ThemeColor.TEXT_DARK);
         lblTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));

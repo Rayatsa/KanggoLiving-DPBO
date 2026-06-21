@@ -78,11 +78,11 @@ public class AdminDashboardPanel extends JPanel {
 
         btnMenuOverview = new SidebarButton("Overview Metrics");
         btnMenuUsers = new SidebarButton("User Management");
-        btnMenuApprovals = new SidebarButton("FR 4 & 10: Approvals");
-        btnMenuFinancials = new SidebarButton("FR 5 & 20: Financials");
+        btnMenuApprovals = new SidebarButton("Approvals");
+        btnMenuFinancials = new SidebarButton("Financials");
         btnMenuTickets = new SidebarButton("Ticket Problem Tracker");
-        btnMenuPortfolio = new SidebarButton("FR 18: Portfolio");
-        btnMenuDiscussion = new SidebarButton("FR 14: Ruang Diskusi");
+        btnMenuPortfolio = new SidebarButton("Portfolio");
+        btnMenuDiscussion = new SidebarButton("Ruang Diskusi");
 
         sidebar.add(btnMenuOverview);
         sidebar.add(btnMenuUsers);
@@ -343,7 +343,7 @@ public class AdminDashboardPanel extends JPanel {
 
         JPanel top = new JPanel(new BorderLayout());
         top.setOpaque(false);
-        JLabel lblTitle = new JLabel("FR 4 & 10: Persetujuan Proyek & Konsultasi");
+        JLabel lblTitle = new JLabel("Persetujuan Proyek & Konsultasi");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(ThemeColor.TEXT_DARK);
         top.add(lblTitle, BorderLayout.WEST);
@@ -410,7 +410,7 @@ public class AdminDashboardPanel extends JPanel {
         
         JPanel payHeader = new JPanel(new BorderLayout());
         payHeader.setOpaque(false);
-        JLabel lblPayTitle = new JLabel("FR 5 & 10: Verifikasi Pembayaran Transaksi");
+        JLabel lblPayTitle = new JLabel("Verifikasi Pembayaran Transaksi");
         lblPayTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblPayTitle.setForeground(ThemeColor.TEXT_DARK);
         payHeader.add(lblPayTitle, BorderLayout.WEST);
@@ -430,7 +430,7 @@ public class AdminDashboardPanel extends JPanel {
         
         JPanel vendHeader = new JPanel(new BorderLayout());
         vendHeader.setOpaque(false);
-        JLabel lblVendTitle = new JLabel("FR 20: Kelola Data Vendor Supplier");
+        JLabel lblVendTitle = new JLabel("Kelola Data Vendor Supplier");
         lblVendTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblVendTitle.setForeground(ThemeColor.TEXT_DARK);
         vendHeader.add(lblVendTitle, BorderLayout.WEST);
@@ -502,7 +502,7 @@ public class AdminDashboardPanel extends JPanel {
                     "Kategori:", txtCat,
                     "Kontak/No. Telp:", txtContact
                 };
-                int option = JOptionPane.showConfirmDialog(AdminDashboardPanel.this, form, "Tambah Vendor Baru (FR 20)", JOptionPane.OK_CANCEL_OPTION);
+                int option = JOptionPane.showConfirmDialog(AdminDashboardPanel.this, form, "Tambah Vendor Baru", JOptionPane.OK_CANCEL_OPTION);
                 if (option == JOptionPane.OK_OPTION) {
                     String name = txtName.getText().trim();
                     String cat = txtCat.getText().trim();
@@ -609,7 +609,7 @@ public class AdminDashboardPanel extends JPanel {
         leftPart.setOpaque(false);
         leftPart.setPreferredSize(new Dimension(280, 0));
         
-        JLabel lblListTitle = new JLabel("FR 18: Daftar Portofolio Desain");
+        JLabel lblListTitle = new JLabel("Daftar Portofolio Desain");
         lblListTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblListTitle.setForeground(ThemeColor.TEXT_DARK);
         lblListTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
@@ -660,7 +660,7 @@ public class AdminDashboardPanel extends JPanel {
         detailCard.add(spDesc, gbc);
 
         // PM Action: Generate PDF Contract (FR 19)
-        RoundedButton btnGenContract = new RoundedButton("FR 19: GENERATE KONTRAK PDF SIMULATION");
+        RoundedButton btnGenContract = new RoundedButton("GENERATE KONTRAK PDF SIMULATION");
         btnGenContract.setPreferredSize(new Dimension(0, 36));
         gbc.gridy = 2;
         gbc.weighty = 0.2;
@@ -739,7 +739,7 @@ public class AdminDashboardPanel extends JPanel {
                 
                 JOptionPane.showMessageDialog(AdminDashboardPanel.this, 
                         new JScrollPane(taCont), 
-                        "FR 19: Generate PDF Kontrak Proyek Sukses", 
+                        "Generate PDF Kontrak Proyek Sukses", 
                         JOptionPane.INFORMATION_MESSAGE);
 
                 // Add to discussion messages
@@ -762,7 +762,7 @@ public class AdminDashboardPanel extends JPanel {
         panel.setBackground(ThemeColor.PASTEL_BROWN_BG);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel lblTitle = new JLabel("FR 14: Ruang Diskusi Kolaborasi");
+        JLabel lblTitle = new JLabel("Ruang Diskusi Kolaborasi");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(ThemeColor.TEXT_DARK);
         lblTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
