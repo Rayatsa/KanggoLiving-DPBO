@@ -302,3 +302,192 @@ Digunakan untuk komponen fisik yang dapat diinspeksi atau didiagnosa kondisinya.
   * `void updateCondition(String condition)`: Mengubah kondisi kelayakan komponen.
 * **Kelas Penerap (`implements`)**:
   * `SystemUnit`: Unit sistem di dalam ruangan klien (misal instalasi kelistrikan).
+
+---
+
+## 6. Diagram Kelas (Class Diagram - Mermaid)
+
+Berikut adalah diagram kelas lengkap yang menunjukkan seluruh atribut, metode, relasi pewarisan (*inheritance*), implementasi *interface*, asosiasi (*association*), serta ketergantungan (*dependency*) antarkelas, termasuk relasi konseptual untuk kelas `Material` dan `Inspection`:
+
+```mermaid
+classDiagram
+    %% Package Users
+    class User {
+        <<abstract>>
+        -int userId
+        -String name
+        -String email
+        -String password
+        -String phone
+        -String role
+        +login(String email, String password) boolean
+        +logout() void
+        +updateProfile(String name, String phone, String email, String password) boolean
+        +changePassword(String oldPassword, String newPassword) boolean
+    }
+    class Admin {
+        -String role
+        +createInvoice(String invoiceId, double amount) boolean
+        +verifyPayment(Payment buktiTransfer) boolean
+        +updateSchedule(int scheduleId) boolean
+    }
+    class Client {
+        -String address
+        +submitProblem(String description) TicketProblem
+        +choseSchedule(Schedule schedule) boolean
+        +approveConsultation(Consultation consultation) boolean
+        +makePayment(Invoice invoice, double amount, String paymentMethod) Payment
+        +viewInvoice(Invoice invoice) void
+    }
+    class Technician {
+        -int technicianId
+        -String specialization
+        +checkSystem(int systemId) boolean
+        +performTroubleShooting(int ticketId) boolean
+        +finalInspection(int ticketId) boolean
+        +createReport(int inspectionId) Report
+    }
+
+    User <|-- Admin
+    User <|-- Client
+    User <|-- Technician
+
+    %% Package Interfaces
+    class Approvable {
+        <<interface>>
+        +approve() boolean
+        +getStatus() String
+    }
+    class Payable {
+        <<interface>>
+        +getAmount() double
+        +getStatus() String
+    }
+    class Diagnosable {
+        <<interface>>
+        +diagnose() String
+        +updateCondition(String condition) void
+    }
+
+    %% Package Models
+    class Consultation {
+        -int consultationId
+        -Date consultationDate
+        -String status
+        +approve() boolean
+        +reschedule(Date newDate) boolean
+        +cancel() boolean
+    }
+    class DesignProject {
+        -String status
+        -int designId
+        -int consultationId
+        -String conceptStyle
+        -double estimatedBudget
+        -int revisionCount
+        +validateBudget(double clientBudget) boolean
+        +updateDesign(String revisionNotes) void
+        +isReadyForProduction() boolean
+        +approve() boolean
+        +getStatus() String
+    }
+    class SystemUnit {
+        -int systemId
+        -String systemName
+        -String condition
+        -String serialNumber
+        +diagnose() String
+        +updateCondition(String condition) void
+    }
+    class Material {
+        -int materialId
+        -String materialName
+        -int quantity
+        -double unitPrice
+        -String status
+        +updateStatus() void
+        +checkAvailability(int requiredQuantity) boolean
+        +updateStock(int usedQuantity) boolean
+        +calculateMaterialCost(int quantity) double
+    }
+    class TicketProblem {
+        -String ticketId
+        -String problemDescription
+        -String status
+        -String createDate
+        +createTicket() boolean
+        +updateStatus(String newStatus) void
+    }
+    class Schedule {
+        -int sceduleId
+        -Date date
+        -String time
+        -String status
+        +setScedule(Date date, String time) boolean
+        +checkAvailable(Date requestedDate) boolean
+    }
+    class Inspection {
+        -int inspectionId
+        -Date inspectionDate
+        -String result
+        +performInspection() boolean
+        +recordResult(String result) void
+        +getResult() String
+    }
+    class Report {
+        -int reportId
+        -String description
+        -Date createdDate
+        +generateReport(int inspectionId) boolean
+        +printReport() boolean
+        +exportReport() boolean
+    }
+    class Invoice {
+        -double amount
+        -double amountPaid
+        -String invoiceId
+        -String status
+        -String createDate
+        +generateInvoice(String ticketId) boolean
+        +sendVoice(int clientId) boolean
+        +calculateTotal() double
+        +addPayment(double nominalUang) void
+        +printSummary() void
+    }
+    class Payment {
+        -String paymentId
+        -String paymentMethod
+        -String status
+        -String paymentDate
+        -double amount
+        -Invoice targetInvoice
+        +confirmPayment() boolean
+    }
+
+    %% Interfaces Implementations
+    Approvable <|.. Consultation
+    Approvable <|.. DesignProject
+    Payable <|.. Invoice
+    Payable <|.. Payment
+    Diagnosable <|.. SystemUnit
+
+    %% Strong Associations (Instance Field References)
+    Payment --> Invoice : "targetInvoice"
+
+    %% Dependencies (Method parameters or return usage)
+    Admin ..> Invoice : "creates"
+    Admin ..> Payment : "verifies"
+    Client ..> TicketProblem : "submits"
+    Client ..> Schedule : "selects"
+    Client ..> Consultation : "approves"
+    Client ..> Payment : "pays"
+    Client ..> Invoice : "views"
+    Technician ..> Report : "creates"
+
+    %% Relasi/Ketergantungan untuk Material dan Inspection
+    DesignProject ..> Material : "estimates cost using"
+    Inspection ..> SystemUnit : "inspects condition of"
+    Technician ..> Inspection : "conducts"
+    Report ..> Inspection : "summarizes"
+```
+

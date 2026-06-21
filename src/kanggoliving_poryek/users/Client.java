@@ -15,7 +15,7 @@ public class Client extends User {
     private String address;
 
     public Client(int userId, String name, String email, String password, String phone, String role, String address) {
-        super(userId, name, email, password, phone, role);
+        super(userId, name, email, password, phone, "Client");
         this.address = address;
     }
 
@@ -49,12 +49,15 @@ public class Client extends User {
     }
 
     public boolean approveConsultation(Consultation consultation) {
-        System.out.println("Klien " + super.getName() + " menyetujui sesi konsultasi #" + consultation.getConsultationId());
+        System.out.println(
+                "Klien " + super.getName() + " menyetujui sesi konsultasi #" + consultation.getConsultationId());
         return consultation.approve();
     }
 
     public Payment makePayment(Invoice invoice, double amount, String paymentMethod) {
-        System.out.println("Klien " + super.getName() + " melakukan pembayaran sebesar Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", amount) + " untuk Invoice ID: " + invoice.getInvoiceId());
+        System.out.println("Klien " + super.getName() + " melakukan pembayaran sebesar Rp"
+                + String.format(new java.util.Locale("in", "ID"), "%,.0f", amount) + " untuk Invoice ID: "
+                + invoice.getInvoiceId());
         String paymentId = "PAY-" + System.currentTimeMillis();
         Payment newPayment = new Payment(paymentId, amount, paymentMethod, invoice);
         return newPayment;
@@ -63,8 +66,10 @@ public class Client extends User {
     public void viewInvoice(Invoice invoice) {
         System.out.println("=== DETAIL INVOICE ===");
         System.out.println("ID Invoice     : " + invoice.getInvoiceId());
-        System.out.println("Total Tagihan  : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", invoice.getAmount()));
-        System.out.println("Jumlah Dibayar : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", invoice.getAmountPaid()));
+        System.out.println(
+                "Total Tagihan  : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", invoice.getAmount()));
+        System.out.println("Jumlah Dibayar : Rp"
+                + String.format(new java.util.Locale("in", "ID"), "%,.0f", invoice.getAmountPaid()));
         System.out.println("Status         : " + invoice.getStatus());
     }
 }
