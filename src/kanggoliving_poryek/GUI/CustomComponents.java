@@ -13,11 +13,11 @@ public class CustomComponents {
 
     public static class ThemeColor {
         public static final Color PASTEL_BROWN_BG = new Color(237, 227, 215); // Pastel Brown BG
-        public static final Color SIDEBAR_BG = new Color(74, 59, 48);          // Dark Pastel Brown
-        public static final Color CARD_BG = new Color(252, 250, 247);         // Warm Soft White
-        public static final Color ACCENT_GREEN = new Color(46, 125, 50);       // Forest Green
+        public static final Color SIDEBAR_BG = new Color(74, 59, 48); // Dark Pastel Brown
+        public static final Color CARD_BG = new Color(252, 250, 247); // Warm Soft White
+        public static final Color ACCENT_GREEN = new Color(46, 125, 50); // Forest Green
         public static final Color ACCENT_GREEN_HOVER = new Color(56, 142, 60);
-        public static final Color TEXT_DARK = new Color(51, 41, 34);           // Deep Espresso
+        public static final Color TEXT_DARK = new Color(51, 41, 34); // Deep Espresso
         public static final Color TEXT_LIGHT = new Color(245, 240, 235);
         public static final Color TEXT_MUTED = new Color(130, 115, 105);
         public static final Color DIVIDER = new Color(220, 210, 200);
@@ -57,7 +57,8 @@ public class CustomComponents {
 
             // Draw background
             graphics.setColor(getBackground());
-            graphics.fillRoundRect(shadowSize, shadowSize, width - 1 - shadowSize * 2, height - 1 - shadowSize * 2, arcs.width, arcs.height);
+            graphics.fillRoundRect(shadowSize, shadowSize, width - 1 - shadowSize * 2, height - 1 - shadowSize * 2,
+                    arcs.width, arcs.height);
         }
     }
 
@@ -200,7 +201,8 @@ public class CustomComponents {
             // Default Cell Renderer to center text vertically and add padding
             DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
                 @Override
-                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                        boolean hasFocus, int row, int column) {
                     Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     if (!isSelected) {
                         c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(248, 245, 240));
