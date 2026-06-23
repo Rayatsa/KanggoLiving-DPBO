@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import kanggoliving_poryek.users.*;
 import kanggoliving_poryek.model.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import kanggoliving_poryek.Database.Koneksi;
 
 public class MainFrame extends JFrame {
     private CardLayout cardLayout;
@@ -15,7 +19,7 @@ public class MainFrame extends JFrame {
     private ArrayList<Client> clientList = new ArrayList<>();
     private ArrayList<Admin> adminList = new ArrayList<>();
     private ArrayList<Technician> technicianList = new ArrayList<>();
-    
+
     private ArrayList<TicketProblem> ticketList = new ArrayList<>();
     private ArrayList<Consultation> consultationList = new ArrayList<>();
     private ArrayList<DesignProject> designProjectList = new ArrayList<>();
@@ -76,17 +80,22 @@ public class MainFrame extends JFrame {
     private void initializeMockData() {
         // Users
         clientList.add(new Client(101, "Sidqi Maan", "sidqi@client.com", "sidqi123", "0812345", "Client", "Bandung"));
-        
+
         // Admins
         adminList.add(new Admin(1, "Meliana", "meli@kanggo.com", "pass123", "08112233", "Finance"));
         adminList.add(new Admin(2, "Budi PM", "budi@kanggo.com", "pass123", "08112244", "Project Manager"));
-        
+
         // Technicians
-        technicianList.add(new Technician(201, "Interior Design", 301, "Raihan Yassar", "raihan@tech.com", "raihan123", "089999", "Technician"));
-        technicianList.add(new Technician(202, "Surveyor", 302, "Denny Surveyor", "denny@tech.com", "denny123", "088888", "Technician"));
-        technicianList.add(new Technician(203, "Workshop", 303, "Wawan Workshop", "wawan@tech.com", "wawan123", "087777", "Technician"));
-        technicianList.add(new Technician(204, "Staf QC", 304, "Qori QC", "qori@tech.com", "qori123", "086666", "Technician"));
-        technicianList.add(new Technician(205, "Installer", 305, "Iwan Installer", "iwan@tech.com", "iwan123", "085555", "Technician"));
+        technicianList.add(new Technician(201, "Interior Design", 301, "Raihan Yassar", "raihan@tech.com", "raihan123",
+                "089999", "Technician"));
+        technicianList.add(new Technician(202, "Surveyor", 302, "Denny Surveyor", "denny@tech.com", "denny123",
+                "088888", "Technician"));
+        technicianList.add(new Technician(203, "Workshop", 303, "Wawan Workshop", "wawan@tech.com", "wawan123",
+                "087777", "Technician"));
+        technicianList.add(
+                new Technician(204, "Staf QC", 304, "Qori QC", "qori@tech.com", "qori123", "086666", "Technician"));
+        technicianList.add(new Technician(205, "Installer", 305, "Iwan Installer", "iwan@tech.com", "iwan123", "085555",
+                "Technician"));
 
         // Materials
         materialList.add(new Material(1, "Cat Dinding Jotun (Pastel)", 50, 150000, "In Stock"));
@@ -101,13 +110,15 @@ public class MainFrame extends JFrame {
         systemUnitList.add(new SystemUnit(803, "Kitchen Cabinet Fitting", "Baik", "SN-KITCH-004"));
 
         // Vendors
-        vendorList.add(new String[]{"VND-001", "Jotun Paints Indonesia", "Cat & Pelapis", "021-555123"});
-        vendorList.add(new String[]{"VND-002", "Phillips Lighting Store", "Kelistrikan & Lampu", "021-555456"});
-        vendorList.add(new String[]{"VND-003", "Depo Bangunan Jaya", "Material Bangunan", "022-777888"});
+        vendorList.add(new String[] { "VND-001", "Jotun Paints Indonesia", "Cat & Pelapis", "021-555123" });
+        vendorList.add(new String[] { "VND-002", "Phillips Lighting Store", "Kelistrikan & Lampu", "021-555456" });
+        vendorList.add(new String[] { "VND-003", "Depo Bangunan Jaya", "Material Bangunan", "022-777888" });
 
         // Initial Discussion Messages
-        discussionMessages.add(new String[]{"System", "System", "Ruang diskusi proyek dimulai.", "21-06-2026 10:00"});
-        discussionMessages.add(new String[]{"Budi PM", "Project Manager", "Selamat datang di proyek baru. Silakan Interior Design mengunggah desain awal.", "21-06-2026 10:15"});
+        discussionMessages
+                .add(new String[] { "System", "System", "Ruang diskusi proyek dimulai.", "21-06-2026 10:00" });
+        discussionMessages.add(new String[] { "Budi PM", "Project Manager",
+                "Selamat datang di proyek baru. Silakan Interior Design mengunggah desain awal.", "21-06-2026 10:15" });
 
         // Prepopulate a basic ticket and project
         TicketProblem t = new TicketProblem("Instalasi listrik kamar utama sering korsleting dan perlu desain ulang.");
@@ -139,50 +150,123 @@ public class MainFrame extends JFrame {
     }
 
     public boolean attemptLogin(String email, String password, String selectedRole) {
-        if (selectedRole.equals("Client")) {
-            for (Client c : clientList) {
-                if (c.getEmail().equalsIgnoreCase(email) && c.getPassword().equals(password)) {
-                    loggedInUser = c;
-                    loggedSubRole = "Client";
+        try {
+            Connection conn = Koneksi.getConnection();
+
+            String sql = "SELECT * FROM users WHERE email=? AND password=?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            pst.setString(1, email);
+            pst.setString(2, password);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+
+                String dbRole = rs.getString("role");
+
+                System.out.println("Role Database = " + dbRole);
+                System.out.println("Role Dipilih = " + selectedRole);
+
+                if (!dbRole.equalsIgnoreCase(selectedRole)) {
+
+                    rs.close();
+                    pst.close();
+                    conn.close();
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Role yang dipilih tidak sesuai dengan data akun!",
+                            "Login Gagal",
+                            JOptionPane.ERROR_MESSAGE);
+
+                    return false;
+                }
+
+                loggedSubRole = rs.getString("sub_role");
+                int userId = rs.getInt("user_id");
+                String name = rs.getString("name");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String specialization = rs.getString("specialization");
+
+                if (selectedRole.equals("Client")) {
+
+                    loggedInUser = new Client(
+                            userId,
+                            name,
+                            email,
+                            password,
+                            phone,
+                            "Client",
+                            address);
+
                     showScreen("CLIENT_DASHBOARD");
-                    return true;
-                }
-            }
-        } else if (selectedRole.startsWith("Admin")) {
-            // Role looks like "Admin - Finance" or "Admin - Project Manager"
-            String subRole = selectedRole.substring(selectedRole.indexOf("-") + 2).trim();
-            for (Admin a : adminList) {
-                if (a.getEmail().equalsIgnoreCase(email) && a.getPassword().equals(password) && a.getRole().equalsIgnoreCase(subRole)) {
-                    loggedInUser = a;
-                    loggedSubRole = subRole;
+
+                } else if (selectedRole.equals("Admin")) {
+
+                    loggedInUser = new Admin(
+                            userId,
+                            name,
+                            email,
+                            password,
+                            phone,
+                            loggedSubRole);
+
                     showScreen("ADMIN_DASHBOARD");
-                    return true;
-                }
-            }
-        } else if (selectedRole.startsWith("Technician")) {
-            String spec = selectedRole.substring(selectedRole.indexOf("-") + 2).trim();
-            for (Technician t : technicianList) {
-                if (t.getEmail().equalsIgnoreCase(email) && t.getPassword().equals(password) && t.getSpecialization().equalsIgnoreCase(spec)) {
-                    loggedInUser = t;
-                    loggedSubRole = spec;
+
+                } else {
+
+                    loggedInUser = new Technician(
+                            userId, // technicianId
+                            specialization,
+                            userId, // userId
+                            name,
+                            email,
+                            password,
+                            phone,
+                            "Technician");
+
                     showScreen("TECHNICIAN_DASHBOARD");
-                    return true;
                 }
+
+                rs.close();
+                pst.close();
+                conn.close();
+
+                return true;
             }
+
+            rs.close();
+            pst.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Login Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
+
         return false;
     }
 
-    public boolean attemptRegister(String name, String email, String password, String phone, String info, String selectedRole) {
+    public boolean attemptRegister(String name, String email, String password, String phone, String info,
+            String selectedRole) {
         // Prevent duplicate emails
         for (Client c : clientList) {
-            if (c.getEmail().equalsIgnoreCase(email)) return false;
+            if (c.getEmail().equalsIgnoreCase(email))
+                return false;
         }
         for (Admin a : adminList) {
-            if (a.getEmail().equalsIgnoreCase(email)) return false;
+            if (a.getEmail().equalsIgnoreCase(email))
+                return false;
         }
         for (Technician t : technicianList) {
-            if (t.getEmail().equalsIgnoreCase(email)) return false;
+            if (t.getEmail().equalsIgnoreCase(email))
+                return false;
         }
 
         int newUserId = (int) (System.currentTimeMillis() % 100000);
@@ -208,22 +292,67 @@ public class MainFrame extends JFrame {
     }
 
     // Getters and Setters for Simulator state
-    public User getLoggedInUser() { return loggedInUser; }
-    public String getLoggedSubRole() { return loggedSubRole; }
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
 
-    public ArrayList<Client> getClientList() { return clientList; }
-    public ArrayList<Admin> getAdminList() { return adminList; }
-    public ArrayList<Technician> getTechnicianList() { return technicianList; }
+    public String getLoggedSubRole() {
+        return loggedSubRole;
+    }
 
-    public ArrayList<TicketProblem> getTicketList() { return ticketList; }
-    public ArrayList<Consultation> getConsultationList() { return consultationList; }
-    public ArrayList<DesignProject> getDesignProjectList() { return designProjectList; }
-    public ArrayList<Invoice> getInvoiceList() { return invoiceList; }
-    public ArrayList<Payment> getPaymentList() { return paymentList; }
-    public ArrayList<Material> getMaterialList() { return materialList; }
-    public ArrayList<SystemUnit> getSystemUnitList() { return systemUnitList; }
-    public ArrayList<Schedule> getScheduleList() { return scheduleList; }
-    public ArrayList<Report> getReportList() { return reportList; }
-    public ArrayList<String[]> getDiscussionMessages() { return discussionMessages; }
-    public ArrayList<String[]> getVendorList() { return vendorList; }
+    public ArrayList<Client> getClientList() {
+        return clientList;
+    }
+
+    public ArrayList<Admin> getAdminList() {
+        return adminList;
+    }
+
+    public ArrayList<Technician> getTechnicianList() {
+        return technicianList;
+    }
+
+    public ArrayList<TicketProblem> getTicketList() {
+        return ticketList;
+    }
+
+    public ArrayList<Consultation> getConsultationList() {
+        return consultationList;
+    }
+
+    public ArrayList<DesignProject> getDesignProjectList() {
+        return designProjectList;
+    }
+
+    public ArrayList<Invoice> getInvoiceList() {
+        return invoiceList;
+    }
+
+    public ArrayList<Payment> getPaymentList() {
+        return paymentList;
+    }
+
+    public ArrayList<Material> getMaterialList() {
+        return materialList;
+    }
+
+    public ArrayList<SystemUnit> getSystemUnitList() {
+        return systemUnitList;
+    }
+
+    public ArrayList<Schedule> getScheduleList() {
+        return scheduleList;
+    }
+
+    public ArrayList<Report> getReportList() {
+        return reportList;
+    }
+
+    public ArrayList<String[]> getDiscussionMessages() {
+        return discussionMessages;
+    }
+
+    public ArrayList<String[]> getVendorList() {
+        return vendorList;
+    }
 }

@@ -6,7 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import kanggoliving_poryek.GUI.CustomComponents.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import kanggoliving_poryek.Database.Koneksi;
+import kanggoliving_poryek.GUI.CustomComponents.RoundedButton;
+import kanggoliving_poryek.GUI.CustomComponents.RoundedPanel;
+import kanggoliving_poryek.GUI.CustomComponents.ThemeColor;
 
 public class RegisterPanel extends JPanel {
     private MainFrame parentFrame;
@@ -63,8 +68,7 @@ public class RegisterPanel extends JPanel {
         txtName.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         txtName.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ThemeColor.DIVIDER, 1),
-                BorderFactory.createEmptyBorder(5, 7, 5, 7)
-        ));
+                BorderFactory.createEmptyBorder(5, 7, 5, 7)));
         gbc.gridy = 3;
         card.add(txtName, gbc);
 
@@ -79,8 +83,7 @@ public class RegisterPanel extends JPanel {
         txtEmail.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         txtEmail.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ThemeColor.DIVIDER, 1),
-                BorderFactory.createEmptyBorder(5, 7, 5, 7)
-        ));
+                BorderFactory.createEmptyBorder(5, 7, 5, 7)));
         gbc.gridy = 5;
         card.add(txtEmail, gbc);
 
@@ -95,8 +98,7 @@ public class RegisterPanel extends JPanel {
         txtPassword.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         txtPassword.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ThemeColor.DIVIDER, 1),
-                BorderFactory.createEmptyBorder(5, 7, 5, 7)
-        ));
+                BorderFactory.createEmptyBorder(5, 7, 5, 7)));
         gbc.gridy = 7;
         card.add(txtPassword, gbc);
 
@@ -111,8 +113,7 @@ public class RegisterPanel extends JPanel {
         txtPhone.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         txtPhone.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ThemeColor.DIVIDER, 1),
-                BorderFactory.createEmptyBorder(5, 7, 5, 7)
-        ));
+                BorderFactory.createEmptyBorder(5, 7, 5, 7)));
         gbc.gridy = 9;
         card.add(txtPhone, gbc);
 
@@ -124,12 +125,12 @@ public class RegisterPanel extends JPanel {
         card.add(lblRole, gbc);
 
         String[] roles = {
-            "Client",
-            "Technician - Workshop",
-            "Technician - Surveyor",
-            "Technician - Staf QC",
-            "Technician - Installer",
-            "Technician - Interior Design"
+                "Client",
+                "Technician - Workshop",
+                "Technician - Surveyor",
+                "Technician - Staf QC",
+                "Technician - Installer",
+                "Technician - Interior Design"
         };
         cbRole = new JComboBox<>(roles);
         cbRole.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -148,8 +149,7 @@ public class RegisterPanel extends JPanel {
         txtDynamicInfo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         txtDynamicInfo.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ThemeColor.DIVIDER, 1),
-                BorderFactory.createEmptyBorder(5, 7, 5, 7)
-        ));
+                BorderFactory.createEmptyBorder(5, 7, 5, 7)));
         gbc.gridy = 13;
         card.add(txtDynamicInfo, gbc);
 
@@ -205,16 +205,56 @@ public class RegisterPanel extends JPanel {
                 String info = txtDynamicInfo.getText().trim();
 
                 if (name.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty() || info.isEmpty()) {
-                    JOptionPane.showMessageDialog(RegisterPanel.this, 
-                            "Semua kolom data wajib diisi!", 
+                    JOptionPane.showMessageDialog(RegisterPanel.this,
+                            "Semua kolom data wajib diisi!",
                             "Peringatan", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
 
-                boolean success = parentFrame.attemptRegister(name, email, password, phone, info, role);
+                boolean success = false;
+                try {
+                    String query = "INSERT INTO users (name, email, password, phone, role, sub_role, specialization, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+                    Connection conn = Koneksi.getConnection();
+                    PreparedStatement pst = conn.prepareStatement(query);
+
+                    pst.setString(1, name);
+                    pst.setString(2, email);
+                    pst.setString(3, password);
+                    pst.setString(4, phone);
+                    pst.setString(5, role);
+
+                    if (role.equals("Client")) {
+                        pst.setString(6, "Client");
+                        pst.setNull(7, java.sql.Types.VARCHAR);
+                        pst.setString(8, info);
+                    } else {
+                        pst.setString(6, role);
+                        pst.setString(7, info);
+                        pst.setNull(8, java.sql.Types.VARCHAR);
+                    }
+
+                    int result = pst.executeUpdate();
+
+                    System.out.println("Rows Inserted = " + result);
+
+                    success = result > 0;
+
+                    pst.close();
+                    conn.close();
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            ex.getMessage(),
+                            "DATABASE ERROR ",
+                            JOptionPane.ERROR_MESSAGE);
+                }
                 if (success) {
-                    JOptionPane.showMessageDialog(RegisterPanel.this, 
-                            "Pendaftaran berhasil! Silakan masuk dengan akun Anda.", 
+                    JOptionPane.showMessageDialog(RegisterPanel.this,
+                            "Pendaftaran berhasil! Silakan masuk dengan akun Anda.",
                             "Sukses", JOptionPane.INFORMATION_MESSAGE);
                     // Clear inputs
                     txtName.setText("");
@@ -223,11 +263,11 @@ public class RegisterPanel extends JPanel {
                     txtPhone.setText("");
                     txtDynamicInfo.setText("");
                     cbRole.setSelectedIndex(0);
-                    
+
                     parentFrame.showScreen("LOGIN");
                 } else {
-                    JOptionPane.showMessageDialog(RegisterPanel.this, 
-                            "Pendaftaran gagal! Email mungkin sudah terdaftar.", 
+                    JOptionPane.showMessageDialog(RegisterPanel.this,
+                            "Pendaftaran gagal! Email mungkin sudah terdaftar.",
                             "Kesalahan", JOptionPane.ERROR_MESSAGE);
                 }
             }

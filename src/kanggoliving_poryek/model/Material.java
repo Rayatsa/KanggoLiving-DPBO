@@ -8,12 +8,12 @@ package kanggoliving_poryek.model;
  *
  * @author Meliana
  */
-public class Material {
-    private int materialId;
-    private String materialName;
-    private int quantity;
-    private double unitPrice;
-    private String status;
+public class Material { // Class untuk menyimpan informasi mengenai material
+    private int materialId; // ID unik Material
+    private String materialName; // Nama Material
+    private int quantity; // Jumlah Material
+    private double unitPrice; // Harga Satuan Material
+    private String status; // Status Material
 
     public Material(int materialId, String materialName, int quantity, double unitPrice, String status) {
         this.materialId = materialId;
@@ -22,60 +22,64 @@ public class Material {
         this.unitPrice = unitPrice;
         updateStatus();
     }
-    
-    public void updateStatus(){
-        if (quantity <= 0) {
+
+    public void updateStatus() { // Method untuk Memperbarui Status Material
+        if (quantity <= 0) { // Jika Jumlah Material Kurang Dari 0
             this.status = "Empty";
-        }else if (quantity <= 10) {
+        } else if (quantity <= 10) { // Jika Jumlah Material Kurang Dari 10
             this.status = "Low";
-        }else{
+        } else { // Jika Jumlah Material Lebih Dari 10
             this.status = "In Stock";
         }
     }
-    
-    public boolean checkAvailability(int requiredQuantity){
+
+    public boolean checkAvailability(int requiredQuantity) { // Mengecek stock apakah memenuhi kebutuhan produksi
         System.out.println("=== CEK KETERSEDIAAN MATERIAL ===");
         System.out.println("Material     : " + materialName);
         System.out.println("Stok Tersedia:" + quantity);
         System.out.println("Dibutuhkan   :" + requiredQuantity);
-        
-        if (quantity >= requiredQuantity) {
+
+        if (quantity >= requiredQuantity) { // Jika jumlah stock lebih banyak dari kebutuhan
             System.out.println("Status: Stock mencukupi.");
             return true;
-        }else{
+        } else { // Jika jumlah stock kurang dari kebutuhan
             System.out.println("Status: Stok Tidak mencukupi.");
             return false;
         }
     }
-    
-    public boolean updateStock(int usedQuantity){
+
+    public boolean updateStock(int usedQuantity) { // Memperbarui jumla stock setiap ada perubahan
         System.out.println("=== PEMBARUAN STOK ===");
-        
-        if (usedQuantity > quantity) {
+
+        if (usedQuantity > quantity) { // Jika jumlah stock lebih banyak dari kebutuhan
             System.out.println("Gagal: Jumlah yang digunakan melebihi stok yang tersedia.");
             return false;
         }
-        
+
         this.quantity -= usedQuantity;
         updateStatus();
-        
+
         System.out.println("Material    :" + materialName);
         System.out.println("Digunakan   :" + usedQuantity);
         System.out.println("Sisa Stok   :" + quantity);
         System.out.println("Status Baru :" + status);
         return true;
     }
-    
-    public double calculateMaterialCost(int quantity) {
-        double totalCost = unitPrice * quantity;
-        
-        System.out.println("=== KALKULASI BIAYA MATERIAL ===");
-        System.out.println("Material    :" + materialName);
-        System.out.println("Jumlah      :" + quantity);
-        System.out.println("Harga Satuan: Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", unitPrice));
-        System.out.println("Total Biaya : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", totalCost));
-        
-        return totalCost;
+
+    public double calculateMaterialCost(int quantity) { // Menghitung total harga material
+        double totalCost = unitPrice * quantity; // Menghitung total biaya
+
+        System.out.println("=== KALKULASI BIAYA MATERIAL ==="); // Header untuk menampilkan output
+        System.out.println("Material    :" + materialName); // Menampilkan nama material
+        System.out.println("Jumlah      :" + quantity); // Menampilkan jumlah material
+        System.out.println("Harga Satuan: Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", unitPrice)); // Menampilkan
+                                                                                                                      // harga
+                                                                                                                      // satuan
+        System.out.println("Total Biaya : Rp" + String.format(new java.util.Locale("in", "ID"), "%,.0f", totalCost)); // Menampilkan
+                                                                                                                      // total
+                                                                                                                      // biaya
+
+        return totalCost; // Mengembalikan nilai total biaya
     }
 
     public int getMaterialId() {
@@ -113,5 +117,5 @@ public class Material {
 
     public String getStatus() {
         return status;
-    }   
+    }
 }

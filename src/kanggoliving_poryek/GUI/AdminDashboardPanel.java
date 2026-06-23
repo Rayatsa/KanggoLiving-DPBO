@@ -14,6 +14,10 @@ import kanggoliving_poryek.users.User;
 import kanggoliving_poryek.users.Client;
 import kanggoliving_poryek.users.Technician;
 import kanggoliving_poryek.model.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import kanggoliving_poryek.Database.Koneksi;
 
 public class AdminDashboardPanel extends JPanel {
     private MainFrame parentFrame;
@@ -141,8 +145,8 @@ public class AdminDashboardPanel extends JPanel {
         String subRole = parentFrame.getLoggedSubRole();
         if (subRole != null && subRole.equalsIgnoreCase("Finance")) {
             if (screenName.equals("APPROVALS") || screenName.equals("TICKETS") || screenName.equals("PORTFOLIO")) {
-                JOptionPane.showMessageDialog(this, 
-                        "Akses Ditolak!\nMenu ini hanya dapat diakses oleh Project Manager.", 
+                JOptionPane.showMessageDialog(this,
+                        "Akses Ditolak!\nMenu ini hanya dapat diakses oleh Project Manager.",
                         "Akses Terbatas", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -166,7 +170,8 @@ public class AdminDashboardPanel extends JPanel {
     }
 
     public void refreshUI() {
-        if (parentFrame.getLoggedInUser() == null) return;
+        if (parentFrame.getLoggedInUser() == null)
+            return;
         Admin admin = (Admin) parentFrame.getLoggedInUser();
         String subRole = parentFrame.getLoggedSubRole();
 
@@ -174,7 +179,8 @@ public class AdminDashboardPanel extends JPanel {
         lblOverviewWelcome.setText("Selamat Datang, " + admin.getName() + " (" + subRole + ")");
 
         // Calculate Overview Statistics
-        int totalUsers = parentFrame.getClientList().size() + parentFrame.getAdminList().size() + parentFrame.getTechnicianList().size();
+        int totalUsers = parentFrame.getClientList().size() + parentFrame.getAdminList().size()
+                + parentFrame.getTechnicianList().size();
         lblStatUsers.setText(String.valueOf(totalUsers));
 
         double totalRevenue = 0;
@@ -189,22 +195,27 @@ public class AdminDashboardPanel extends JPanel {
         lblStatTickets.setText(String.valueOf(totalTickets));
 
         // 1. User Management Screen Table
-        DefaultTableModel modelUsers = new DefaultTableModel(new String[]{"ID User", "Nama", "Email", "No. Telepon", "Peran / Detail"}, 0);
+        DefaultTableModel modelUsers = new DefaultTableModel(
+                new String[] { "ID User", "Nama", "Email", "No. Telepon", "Peran / Detail" }, 0);
         for (Client c : parentFrame.getClientList()) {
-            modelUsers.addRow(new Object[]{c.getUserId(), c.getName(), c.getEmail(), c.getPhone(), "Client - " + c.getAddress()});
+            modelUsers.addRow(new Object[] { c.getUserId(), c.getName(), c.getEmail(), c.getPhone(),
+                    "Client - " + c.getAddress() });
         }
         for (Admin a : parentFrame.getAdminList()) {
-            modelUsers.addRow(new Object[]{a.getUserId(), a.getName(), a.getEmail(), a.getPhone(), "Admin - " + a.getRole()});
+            modelUsers.addRow(
+                    new Object[] { a.getUserId(), a.getName(), a.getEmail(), a.getPhone(), "Admin - " + a.getRole() });
         }
         for (Technician t : parentFrame.getTechnicianList()) {
-            modelUsers.addRow(new Object[]{t.getUserId(), t.getName(), t.getEmail(), t.getPhone(), "Technician - " + t.getSpecialization()});
+            modelUsers.addRow(new Object[] { t.getUserId(), t.getName(), t.getEmail(), t.getPhone(),
+                    "Technician - " + t.getSpecialization() });
         }
         tblUsers.setModel(modelUsers);
 
         // 2. Approvals Screen Table
-        DefaultTableModel modelAppr = new DefaultTableModel(new String[]{"ID Desain", "ID Konsultasi", "Konsep Gaya", "Estimasi Budget", "Jumlah Revisi", "Status"}, 0);
+        DefaultTableModel modelAppr = new DefaultTableModel(new String[] { "ID Desain", "ID Konsultasi", "Konsep Gaya",
+                "Estimasi Budget", "Jumlah Revisi", "Status" }, 0);
         for (DesignProject dp : parentFrame.getDesignProjectList()) {
-            modelAppr.addRow(new Object[]{
+            modelAppr.addRow(new Object[] {
                     dp.getDesignId(),
                     dp.getConsultationId(),
                     dp.getConceptStyle(),
@@ -212,13 +223,15 @@ public class AdminDashboardPanel extends JPanel {
                     dp.getRevisionCount(),
                     dp.getStatus()
             });
+
         }
         tblApprovals.setModel(modelAppr);
 
         // 3. Financials Screen - Payments Table
-        DefaultTableModel modelPay = new DefaultTableModel(new String[]{"ID Pembayaran", "ID Invoice", "Nominal Pembayaran", "Metode", "Tanggal Bayar", "Status"}, 0);
+        DefaultTableModel modelPay = new DefaultTableModel(new String[] { "ID Pembayaran", "ID Invoice",
+                "Nominal Pembayaran", "Metode", "Tanggal Bayar", "Status" }, 0);
         for (Payment pay : parentFrame.getPaymentList()) {
-            modelPay.addRow(new Object[]{
+            modelPay.addRow(new Object[] {
                     pay.getPaymentId(),
                     pay.getTargetInvoice().getInvoiceId(),
                     rpFormat.format(pay.getAmount()),
@@ -230,16 +243,18 @@ public class AdminDashboardPanel extends JPanel {
         tblPayments.setModel(modelPay);
 
         // 3b. Financials Screen - Vendors Table
-        DefaultTableModel modelVendors = new DefaultTableModel(new String[]{"ID Vendor", "Nama Vendor", "Kategori", "Kontak"}, 0);
+        DefaultTableModel modelVendors = new DefaultTableModel(
+                new String[] { "ID Vendor", "Nama Vendor", "Kategori", "Kontak" }, 0);
         for (String[] v : parentFrame.getVendorList()) {
             modelVendors.addRow(v);
         }
         tblVendors.setModel(modelVendors);
 
         // 4. Tickets Table
-        DefaultTableModel modelTickets = new DefaultTableModel(new String[]{"ID Tiket", "Deskripsi Keluhan", "Status Tiket", "Tanggal Keluhan"}, 0);
+        DefaultTableModel modelTickets = new DefaultTableModel(
+                new String[] { "ID Tiket", "Deskripsi Keluhan", "Status Tiket", "Tanggal Keluhan" }, 0);
         for (TicketProblem t : parentFrame.getTicketList()) {
-            modelTickets.addRow(new Object[]{
+            modelTickets.addRow(new Object[] {
                     t.getTicketId() != null ? t.getTicketId() : "Draft",
                     t.getProblemDescription(),
                     t.getStatus(),
@@ -252,9 +267,74 @@ public class AdminDashboardPanel extends JPanel {
         StringBuilder sb = new StringBuilder();
         for (String[] msg : parentFrame.getDiscussionMessages()) {
             sb.append("[").append(msg[3]).append("] ").append(msg[0]).append(" (").append(msg[1]).append("):\n")
-              .append(msg[2]).append("\n\n");
+                    .append(msg[2]).append("\n\n");
         }
         taChat.setText(sb.toString());
+    }
+
+    private void loadUsersFromDatabase() {
+
+        DefaultTableModel modelUsers = new DefaultTableModel(
+                new String[] { "ID User", "Nama", "Email", "No. Telepon", "Peran / Detail" }, 0);
+
+        try {
+
+            Connection conn = Koneksi.getConnection();
+
+            String sql = "SELECT * FROM users";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                String detail = "";
+
+                String role = rs.getString("role");
+
+                if (role.equalsIgnoreCase("Client")) {
+
+                    detail = "Client - " + rs.getString("address");
+
+                } else if (role.equalsIgnoreCase("Admin")) {
+
+                    detail = "Admin - " + rs.getString("sub_role");
+
+                } else {
+
+                    detail = "Technician - " + rs.getString("specialization");
+
+                }
+
+                modelUsers.addRow(new Object[] {
+                        rs.getInt("user_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        detail
+                });
+
+            }
+
+            tblUsers.setModel(modelUsers);
+
+            rs.close();
+            pst.close();
+            conn.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+
+        }
+
     }
 
     private JPanel createOverviewPanel() {
@@ -362,8 +442,8 @@ public class AdminDashboardPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String subRole = parentFrame.getLoggedSubRole();
                 if (!subRole.equalsIgnoreCase("Project Manager") && !subRole.equalsIgnoreCase("Manager")) {
-                    JOptionPane.showMessageDialog(AdminDashboardPanel.this, 
-                            "Akses Ditolak! Hanya Project Manager yang dapat menyetujui proyek desain.", 
+                    JOptionPane.showMessageDialog(AdminDashboardPanel.this,
+                            "Akses Ditolak! Hanya Project Manager yang dapat menyetujui proyek desain.",
                             "Peringatan", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -378,17 +458,19 @@ public class AdminDashboardPanel extends JPanel {
                 for (DesignProject dp : parentFrame.getDesignProjectList()) {
                     if (dp.getDesignId() == designId) {
                         dp.approve();
-                        
+
                         // Send Chat Alert
                         String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                        parentFrame.getDiscussionMessages().add(new String[]{
+                        parentFrame.getDiscussionMessages().add(new String[] {
                                 parentFrame.getLoggedInUser().getName(),
                                 "Project Manager",
-                                "Telah menyetujui (Approved) Design Project ID #" + designId + " untuk segera diproduksi.",
+                                "Telah menyetujui (Approved) Design Project ID #" + designId
+                                        + " untuk segera diproduksi.",
                                 dateStr
                         });
-                        
-                        JOptionPane.showMessageDialog(AdminDashboardPanel.this, "Design Project #" + designId + " berhasil disetujui!");
+
+                        JOptionPane.showMessageDialog(AdminDashboardPanel.this,
+                                "Design Project #" + designId + " berhasil disetujui!");
                         refreshUI();
                         return;
                     }
@@ -407,7 +489,7 @@ public class AdminDashboardPanel extends JPanel {
         // Part 1: Payments Validation
         JPanel payPanel = new JPanel(new BorderLayout(0, 10));
         payPanel.setOpaque(false);
-        
+
         JPanel payHeader = new JPanel(new BorderLayout());
         payHeader.setOpaque(false);
         JLabel lblPayTitle = new JLabel("Verifikasi Pembayaran Transaksi");
@@ -427,7 +509,7 @@ public class AdminDashboardPanel extends JPanel {
         // Part 2: Vendor Management (FR 20)
         JPanel vendorPanel = new JPanel(new BorderLayout(0, 10));
         vendorPanel.setOpaque(false);
-        
+
         JPanel vendHeader = new JPanel(new BorderLayout());
         vendHeader.setOpaque(false);
         JLabel lblVendTitle = new JLabel("Kelola Data Vendor Supplier");
@@ -450,8 +532,8 @@ public class AdminDashboardPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String subRole = parentFrame.getLoggedSubRole();
                 if (!subRole.equalsIgnoreCase("Finance")) {
-                    JOptionPane.showMessageDialog(AdminDashboardPanel.this, 
-                            "Akses Ditolak! Hanya sub-role Finance yang dapat memverifikasi pembayaran.", 
+                    JOptionPane.showMessageDialog(AdminDashboardPanel.this,
+                            "Akses Ditolak! Hanya sub-role Finance yang dapat memverifikasi pembayaran.",
                             "Peringatan", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -466,23 +548,27 @@ public class AdminDashboardPanel extends JPanel {
                 for (Payment pay : parentFrame.getPaymentList()) {
                     if (pay.getPaymentId().equals(paymentId)) {
                         if (pay.getStatus().equalsIgnoreCase("Succes")) {
-                            JOptionPane.showMessageDialog(AdminDashboardPanel.this, "Pembayaran ini sudah terverifikasi.");
+                            JOptionPane.showMessageDialog(AdminDashboardPanel.this,
+                                    "Pembayaran ini sudah terverifikasi.");
                             return;
                         }
-                        
+
                         Admin admin = (Admin) parentFrame.getLoggedInUser();
                         boolean verified = admin.verifyPayment(pay);
                         if (verified) {
                             // Send chat notification
                             String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                            parentFrame.getDiscussionMessages().add(new String[]{
+                            parentFrame.getDiscussionMessages().add(new String[] {
                                     admin.getName(),
                                     "Finance",
-                                    "Telah memverifikasi pembayaran " + paymentId + " sebesar " + rpFormat.format(pay.getAmount()) + " untuk Invoice " + pay.getTargetInvoice().getInvoiceId() + " (LUNAS/PARTIAL)",
+                                    "Telah memverifikasi pembayaran " + paymentId + " sebesar "
+                                            + rpFormat.format(pay.getAmount()) + " untuk Invoice "
+                                            + pay.getTargetInvoice().getInvoiceId() + " (LUNAS/PARTIAL)",
                                     dateStr
                             });
-                            
-                            JOptionPane.showMessageDialog(AdminDashboardPanel.this, "Pembayaran " + paymentId + " berhasil diverifikasi!");
+
+                            JOptionPane.showMessageDialog(AdminDashboardPanel.this,
+                                    "Pembayaran " + paymentId + " berhasil diverifikasi!");
                             refreshUI();
                         }
                         return;
@@ -498,11 +584,12 @@ public class AdminDashboardPanel extends JPanel {
                 JTextField txtCat = new JTextField();
                 JTextField txtContact = new JTextField();
                 Object[] form = {
-                    "Nama Vendor:", txtName,
-                    "Kategori:", txtCat,
-                    "Kontak/No. Telp:", txtContact
+                        "Nama Vendor:", txtName,
+                        "Kategori:", txtCat,
+                        "Kontak/No. Telp:", txtContact
                 };
-                int option = JOptionPane.showConfirmDialog(AdminDashboardPanel.this, form, "Tambah Vendor Baru", JOptionPane.OK_CANCEL_OPTION);
+                int option = JOptionPane.showConfirmDialog(AdminDashboardPanel.this, form, "Tambah Vendor Baru",
+                        JOptionPane.OK_CANCEL_OPTION);
                 if (option == JOptionPane.OK_OPTION) {
                     String name = txtName.getText().trim();
                     String cat = txtCat.getText().trim();
@@ -512,11 +599,11 @@ public class AdminDashboardPanel extends JPanel {
                         return;
                     }
                     String nextId = "VND-00" + (parentFrame.getVendorList().size() + 1);
-                    parentFrame.getVendorList().add(new String[]{nextId, name, cat, contact});
-                    
+                    parentFrame.getVendorList().add(new String[] { nextId, name, cat, contact });
+
                     // Log
                     String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                    parentFrame.getDiscussionMessages().add(new String[]{
+                    parentFrame.getDiscussionMessages().add(new String[] {
                             parentFrame.getLoggedInUser().getName(),
                             parentFrame.getLoggedSubRole(),
                             "Menambahkan Vendor baru: " + name + " (" + cat + ")",
@@ -569,7 +656,7 @@ public class AdminDashboardPanel extends JPanel {
                 }
 
                 // PM assigns or marks ticket as In Progress
-                String[] statusOptions = {"In Progress", "Resolved"};
+                String[] statusOptions = { "In Progress", "Resolved" };
                 String selectedStatus = (String) JOptionPane.showInputDialog(AdminDashboardPanel.this,
                         "Perbarui Status Tiket:", "Update Tiket",
                         JOptionPane.QUESTION_MESSAGE, null, statusOptions, statusOptions[0]);
@@ -578,17 +665,18 @@ public class AdminDashboardPanel extends JPanel {
                     for (TicketProblem t : parentFrame.getTicketList()) {
                         if (t.getProblemDescription().equals(ticketDesc)) {
                             t.updateStatus(selectedStatus);
-                            
+
                             // Log
                             String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                            parentFrame.getDiscussionMessages().add(new String[]{
+                            parentFrame.getDiscussionMessages().add(new String[] {
                                     parentFrame.getLoggedInUser().getName(),
                                     "Project Manager",
                                     "Mengubah status tiket keluhan menjadi: " + selectedStatus,
                                     dateStr
                             });
 
-                            JOptionPane.showMessageDialog(AdminDashboardPanel.this, "Status tiket berhasil diperbarui.");
+                            JOptionPane.showMessageDialog(AdminDashboardPanel.this,
+                                    "Status tiket berhasil diperbarui.");
                             refreshUI();
                             return;
                         }
@@ -608,7 +696,7 @@ public class AdminDashboardPanel extends JPanel {
         JPanel leftPart = new JPanel(new BorderLayout());
         leftPart.setOpaque(false);
         leftPart.setPreferredSize(new Dimension(280, 0));
-        
+
         JLabel lblListTitle = new JLabel("Daftar Portofolio Desain");
         lblListTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblListTitle.setForeground(ThemeColor.TEXT_DARK);
@@ -616,11 +704,11 @@ public class AdminDashboardPanel extends JPanel {
         leftPart.add(lblListTitle, BorderLayout.NORTH);
 
         String[] items = {
-            "Modern Japandi Kitchen (2025)",
-            "Minimalist Nordic Living Room (2025)",
-            "Industrial Studio Loft (2026)",
-            "Scandinavian Bedroom Comfort (2026)",
-            "Classic Royal Dining Room (2026)"
+                "Modern Japandi Kitchen (2025)",
+                "Minimalist Nordic Living Room (2025)",
+                "Industrial Studio Loft (2026)",
+                "Scandinavian Bedroom Comfort (2026)",
+                "Classic Royal Dining Room (2026)"
         };
         listPortfolio = new JList<>(items);
         listPortfolio.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -704,8 +792,8 @@ public class AdminDashboardPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String subRole = parentFrame.getLoggedSubRole();
                 if (!subRole.equalsIgnoreCase("Project Manager")) {
-                    JOptionPane.showMessageDialog(AdminDashboardPanel.this, 
-                            "Akses Ditolak! Hanya Project Manager yang dapat menyusun dokumen kontrak.", 
+                    JOptionPane.showMessageDialog(AdminDashboardPanel.this,
+                            "Akses Ditolak! Hanya Project Manager yang dapat menyusun dokumen kontrak.",
                             "Peringatan", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -736,15 +824,15 @@ public class AdminDashboardPanel extends JPanel {
                 taCont.setText(contractText);
                 taCont.setFont(new Font("Monospaced", Font.PLAIN, 12));
                 taCont.setEditable(false);
-                
-                JOptionPane.showMessageDialog(AdminDashboardPanel.this, 
-                        new JScrollPane(taCont), 
-                        "Generate PDF Kontrak Proyek Sukses", 
+
+                JOptionPane.showMessageDialog(AdminDashboardPanel.this,
+                        new JScrollPane(taCont),
+                        "Generate PDF Kontrak Proyek Sukses",
                         JOptionPane.INFORMATION_MESSAGE);
 
                 // Add to discussion messages
                 String dateStr = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
-                parentFrame.getDiscussionMessages().add(new String[]{
+                parentFrame.getDiscussionMessages().add(new String[] {
                         parentFrame.getLoggedInUser().getName(),
                         "Project Manager",
                         "Telah berhasil men-generate dokumen PDF Kontrak Proyek untuk " + clientName + ".",
@@ -785,8 +873,7 @@ public class AdminDashboardPanel extends JPanel {
         txtChatMsg.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         txtChatMsg.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ThemeColor.DIVIDER, 1),
-                BorderFactory.createEmptyBorder(6, 8, 6, 8)
-        ));
+                BorderFactory.createEmptyBorder(6, 8, 6, 8)));
         inputPanel.add(txtChatMsg, BorderLayout.CENTER);
 
         RoundedButton btnSend = new RoundedButton("KIRIM");
@@ -799,13 +886,14 @@ public class AdminDashboardPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String msg = txtChatMsg.getText().trim();
-                if (msg.isEmpty()) return;
+                if (msg.isEmpty())
+                    return;
 
                 String senderName = parentFrame.getLoggedInUser().getName();
                 String senderRole = "Admin - " + parentFrame.getLoggedSubRole();
                 String timestamp = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
 
-                parentFrame.getDiscussionMessages().add(new String[]{senderName, senderRole, msg, timestamp});
+                parentFrame.getDiscussionMessages().add(new String[] { senderName, senderRole, msg, timestamp });
                 txtChatMsg.setText("");
                 refreshUI();
             }

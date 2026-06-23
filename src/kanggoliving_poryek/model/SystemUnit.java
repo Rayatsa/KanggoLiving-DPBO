@@ -22,49 +22,49 @@ public class SystemUnit implements Diagnosable {
         this.condition = condition;
         this.serialNumber = serialNumber;
     }
-    
-    public String diagnose(){
+
+    public String diagnose() {
         System.out.println("=== DIAGNOSA SISTEM ===");
         System.out.println("ID Sistem   :   " + systemId);
         System.out.println("Nama Sistem     :" + systemName);
         System.out.println("Serial Number   :" + serialNumber);
         System.out.println("Kondisi Awal    :" + condition);
         System.out.println("Proses          :Menganalisis kondisi sistem secara menyeluruh...");
-        
+
         String diagnoseResult;
-        
+
         switch (this.condition.toLowerCase()) {
-            case "rusak" :
+            case "rusak":
                 diagnoseResult = "Sistem mengalami kerusakan fisik . Diperlukan perbaikan atau penggantian komponen.";
                 break;
-            case "error" :
+            case "error":
                 diagnoseResult = "Sistem mengalami gangguan fungsional. Diperlukan troubleshooting teknis.";
                 break;
             case "baik":
                 diagnoseResult = "Sistem dalam kondisi baik. Tidak ditermukan kerusakan.";
                 break;
             case "perlu pengecekan":
-                diagnoseResult =" Sistem memerlukan pengecekan lebih lanjut oleh teknisi ahli.";
+                diagnoseResult = " Sistem memerlukan pengecekan lebih lanjut oleh teknisi ahli.";
                 break;
             default:
                 diagnoseResult = "Kondisi sistem tidak dikenali. Diperlukan inspeksi manual oleh teknisi.";
                 break;
         }
         System.out.println("Hasil Diagnosa: " + diagnoseResult);
-        return  diagnoseResult;
+        return diagnoseResult;
     }
-    
+
     public void updateCondition(String condition) {
         String kondisiLama = this.condition;
         this.condition = condition;
-        
+
         System.out.println("=== PEMBARUAN KONDISI SISTEM ===");
         System.out.println("ID Sistem       :" + systemId);
         System.out.println("Nama Sistem     :" + systemName);
         System.out.println("Serial Number   :" + serialNumber);
         System.out.println("Kondisi Lama    :" + kondisiLama);
         System.out.println("Kondisi Terbaru :" + condition);
-        System.out.println("Status          :Kondisi sistem berhasil diperbarui." );
+        System.out.println("Status          :Kondisi sistem berhasil diperbarui.");
     }
 
     public int getSystemId() {
