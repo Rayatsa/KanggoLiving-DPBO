@@ -168,7 +168,18 @@ public class MainFrame extends JFrame {
                 System.out.println("Role Database = " + dbRole);
                 System.out.println("Role Dipilih = " + selectedRole);
 
-                if (!dbRole.equalsIgnoreCase(selectedRole)) {
+                // Parse main roles (e.g. "Admin - Finance" -> "Admin")
+                String mainSelectedRole = selectedRole;
+                if (selectedRole.contains(" - ")) {
+                    mainSelectedRole = selectedRole.split(" - ")[0].trim();
+                }
+
+                String mainDbRole = dbRole;
+                if (dbRole.contains(" - ")) {
+                    mainDbRole = dbRole.split(" - ")[0].trim();
+                }
+
+                if (!mainDbRole.equalsIgnoreCase(mainSelectedRole)) {
 
                     rs.close();
                     pst.close();
@@ -183,14 +194,40 @@ public class MainFrame extends JFrame {
                     return false;
                 }
 
-                loggedSubRole = rs.getString("sub_role");
                 int userId = rs.getInt("user_id");
                 String name = rs.getString("name");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
                 String specialization = rs.getString("specialization");
 
-                if (selectedRole.equals("Client")) {
+                // Determine sub-role (specialization for Technician, sub_role for Admin)
+                if (mainSelectedRole.equalsIgnoreCase("Admin")) {
+                    loggedSubRole = rs.getString("sub_role");
+                    if (loggedSubRole == null || loggedSubRole.trim().isEmpty()) {
+                        if (selectedRole.contains(" - ")) {
+                            loggedSubRole = selectedRole.split(" - ")[1].trim();
+                        } else {
+                            loggedSubRole = "Finance"; // Default fallback
+                        }
+                    }
+                } else if (mainSelectedRole.equalsIgnoreCase("Technician")) {
+                    loggedSubRole = rs.getString("specialization");
+                    if (loggedSubRole == null || loggedSubRole.trim().isEmpty()) {
+                        loggedSubRole = rs.getString("sub_role");
+                        if (loggedSubRole == null || loggedSubRole.trim().isEmpty() || loggedSubRole.equalsIgnoreCase("Technician")) {
+                            if (selectedRole.contains(" - ")) {
+                                loggedSubRole = selectedRole.split(" - ")[1].trim();
+                            } else {
+                                loggedSubRole = "Workshop"; // Default fallback
+                            }
+                        }
+                    }
+                    specialization = loggedSubRole;
+                } else {
+                    loggedSubRole = "Client";
+                }
+
+                if (mainSelectedRole.equalsIgnoreCase("Client")) {
 
                     loggedInUser = new Client(
                             userId,
@@ -203,7 +240,7 @@ public class MainFrame extends JFrame {
 
                     showScreen("CLIENT_DASHBOARD");
 
-                } else if (selectedRole.equals("Admin")) {
+                } else if (mainSelectedRole.equalsIgnoreCase("Admin")) {
 
                     loggedInUser = new Admin(
                             userId,
